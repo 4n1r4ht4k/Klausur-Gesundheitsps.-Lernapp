@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1a3a2a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="GP Quiz">
+<title>GP Quiz · Gesundheitspsychologie</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--g:#1a3a2a;--gm:#2d5a3d;--gb:#3d8b5a;--bg:#fafaf8;--s:#fff;--s2:#f2f1ee;--bd:#dedad4;--t:#1c1917;--tm:#3d3830;--tu:#79736a;--td:#b0a89e;--sf:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;font-size:16px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t);max-width:480px;margin:0 auto;overflow-x:hidden;line-height:1.5}
+.screen{display:none;flex-direction:column;min-height:100vh;min-height:100dvh}
+.screen.on{display:flex}
+.nav{background:var(--s);border-bottom:1px solid var(--bd);padding:calc(var(--sf) + 10px) 16px 10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:30}
+.nav-back{width:36px;height:36px;background:var(--s2);border:none;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--tm)}
+.nav-title{font-size:16px;font-weight:700;flex:1}
+.nav-right{font-size:13px;color:var(--tu);font-weight:700}
+.hero{background:var(--g);color:#fff;padding:calc(var(--sf) + 18px) 20px 22px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.04)}
+.hero-sub{font-size:11px;opacity:.55;margin-bottom:14px;line-height:1.4}
+.hero-count{display:flex;align-items:baseline;gap:7px}
+.hero-n{font-size:50px;font-weight:800;letter-spacing:-2px;line-height:1}
+.hero-l{font-size:14px;opacity:.8;font-weight:500}
+.hero-streak{margin-top:12px;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.13);border-radius:20px;padding:4px 11px;font-size:13px;font-weight:600}
+.hbody{padding:14px;flex:1;display:flex;flex-direction:column;gap:13px;padding-bottom:82px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sbox{background:var(--s);border:1px solid var(--bd);border-radius:13px;padding:12px 9px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.sbox .si{font-size:16px;margin-bottom:4px}
+.sbox .sv{font-size:20px;font-weight:800;color:var(--g);line-height:1}
+.sbox .sl{font-size:11px;color:var(--tu);margin-top:2px;font-weight:500}
+.mbtn{background:var(--g);color:#fff;border:none;width:100%;padding:15px 17px;border-radius:13px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 12px rgba(26,58,42,.3);font-family:inherit}
+.mbtn:active{opacity:.9}
+.mbadge{background:rgba(255,255,255,.15);border-radius:7px;padding:4px 9px;font-size:12px}
+.slbl{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--tu);margin-bottom:7px}
+.tlist{display:flex;flex-direction:column;gap:7px}
+.titem{background:var(--s);border:1px solid var(--bd);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:9px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.titem:active{background:var(--s2)}
+.ti-ico{font-size:19px;flex-shrink:0}
+.ti-body{flex:1;min-width:0}
+.ti-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ti-bar{display:flex;align-items:center;gap:6px;margin-top:4px}
+.pb{height:4px;background:var(--s2);border-radius:2px;flex:1}
+.pf{height:100%;background:var(--gb);border-radius:2px}
+.pt{font-size:11px;color:var(--tu);font-weight:600;flex-shrink:0}
+.nc{background:var(--s);border:1px solid var(--bd);border-radius:13px;padding:13px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.nc-top{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.nc-ico{width:34px;height:34px;background:#fffbeb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.nc-title{font-size:13px;font-weight:700}
+.nc-sub{font-size:11px;color:var(--tu);margin-top:1px}
+.nc-row{display:flex;align-items:center;gap:6px}
+input[type=time]{flex:1;border:1.5px solid var(--bd);border-radius:8px;padding:7px 10px;font-family:inherit;font-size:14px;font-weight:600;background:var(--s2);color:var(--t);outline:none}
+.btn{border:none;cursor:pointer;border-radius:8px;font-family:inherit;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.btn:active{opacity:.85}
+.btng{background:var(--g);color:#fff;padding:8px 13px;font-size:12px}
+.btnm{background:var(--s2);color:var(--tm);padding:8px 11px;font-size:12px}
+.btno{background:transparent;border:1.5px solid var(--bd);color:var(--tm);padding:8px 11px;font-size:13px}
+.btnbl{width:100%;justify-content:center;padding:12px;font-size:14px;border-radius:13px}
+.hmap{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:6px}
+.hd{aspect-ratio:1;border-radius:3px;background:var(--s2)}
+.hd1{background:#c8e6c9}.hd2{background:#81c784}.hd3{background:#43a047}.hd4{background:#1a3a2a}
+#quiz{background:var(--bg)}
+.qbar{height:4px;background:var(--s2);position:sticky;top:58px;z-index:20}
+.qfill{height:100%;background:var(--gb);transition:width .4s ease;border-radius:0 2px 2px 0}
+.qbody{flex:1;padding:14px 14px 80px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.qcard{background:var(--s);border:1px solid var(--bd);border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.09)}
+.chip-row{padding:16px 18px 0}
+.qchip{display:inline-flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--tu)}
+.qtxt{padding:14px 18px 18px;font-size:16px;font-weight:700;line-height:1.55;color:var(--t)}
+.qtxt em{font-style:italic;color:var(--gm)}
+.revbtn{width:100%;padding:14px;background:var(--g);color:#fff;border:none;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.revbtn:active{background:var(--gm)}
+.ansbox{display:none;border-top:1px solid var(--bd)}
+.ansbox.open{display:block}
+.ans-inner{padding:18px}
+.ans-lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gb);margin-bottom:9px}
+.ans-text{font-size:13.5px;line-height:1.8;color:var(--tm)}
+.ans-text strong{color:var(--t);font-weight:700}
+.ans-text ul,.ans-text ol{padding-left:18px;margin:7px 0}
+.ans-text li{margin-bottom:5px}
+.ans-text .src{font-size:11px;color:var(--td);font-style:italic;margin-top:9px;border-top:1px solid var(--bd);padding-top:7px;display:block}
+.rarea{display:none}
+.rarea.open{display:block}
+.rlbl{text-align:center;font-size:12px;color:var(--tu);font-weight:600;padding:12px 0 8px}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:0 4px 4px}
+.rbtn{border:2px solid transparent;border-radius:12px;cursor:pointer;padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:inherit}
+.rbtn:active{opacity:.8}
+.ri{font-size:22px}.rl{font-size:12px;font-weight:700}.rs{font-size:10px;font-weight:500;opacity:.7}
+.re{background:#f0fdf4;border-color:#86efac;color:#166534}
+.rm{background:#fffbeb;border-color:#fcd34d;color:#92400e}
+.rh{background:#fff1f2;border-color:#fca5a5;color:#991b1b}
+#done{background:linear-gradient(155deg,var(--g) 0%,#0d2018 100%);color:#fff;align-items:center;justify-content:center;padding:30px 18px}
+.d-ico{font-size:60px;margin-bottom:16px}
+.d-h{font-size:25px;font-weight:800;text-align:center;margin-bottom:5px}
+.d-s{font-size:14px;opacity:.75;text-align:center;line-height:1.5;margin-bottom:26px}
+.d-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;width:100%;margin-bottom:26px}
+.d-stat{background:rgba(255,255,255,.1);border-radius:12px;padding:13px 5px;text-align:center}
+.dv{font-size:24px;font-weight:800}.dl{font-size:10px;opacity:.6;margin-top:2px;font-weight:500}
+.d-acts{display:flex;flex-direction:column;gap:8px;width:100%}
+.d-p{background:#fff;color:var(--g);padding:13px;font-size:14px;border-radius:12px;font-family:inherit;font-weight:700;border:none;cursor:pointer;width:100%}
+.d-s2{background:rgba(255,255,255,.1);color:#fff;padding:11px;font-size:14px;border-radius:12px;font-family:inherit;font-weight:600;border:1px solid rgba(255,255,255,.25);cursor:pointer;width:100%}
+.ts-grid{padding:12px 14px 110px;display:flex;flex-direction:column;gap:7px}
+.ts-item{background:var(--s);border:2px solid var(--bd);border-radius:13px;padding:12px 13px;display:flex;align-items:center;gap:9px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.ts-item.on{border-color:var(--gb);background:#f0f9f0}
+.ts-ico{font-size:20px;flex-shrink:0}
+.ts-name{font-size:14px;font-weight:700}
+.ts-ct{font-size:11px;color:var(--tu);margin-top:1px}
+.ts-chk{width:23px;height:23px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;margin-left:auto;flex-shrink:0}
+.ts-item.on .ts-chk{background:var(--g);border-color:var(--g)}
+.sticky-bot{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:10px 14px calc(10px + var(--sb));background:rgba(250,250,248,.96);backdrop-filter:blur(10px);border-top:1px solid var(--bd)}
+.st-body{padding:14px;display:flex;flex-direction:column;gap:12px;padding-bottom:84px}
+.st-card{background:var(--s);border:1px solid var(--bd);border-radius:13px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.st-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:1px solid var(--bd)}
+.st-row:last-child{border-bottom:none}
+.sr-ico{width:32px;height:32px;background:var(--s2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.sr-b{flex:1}.sr-t{font-size:13px;font-weight:700}.sr-s{font-size:11px;color:var(--tu);margin-top:1px}.sr-v{font-size:14px;font-weight:800;color:var(--g)}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--s);border-top:1px solid var(--bd);display:flex;padding:6px 0 calc(6px + var(--sb));z-index:20}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:none;padding:5px 0}
+.bn .ico{font-size:20px}.bn .lbl{font-size:10px;font-weight:600;color:var(--td)}.bn.on .lbl{color:var(--g)}
+.toast{position:fixed;bottom:calc(72px + var(--sb));left:50%;transform:translateX(-50%) translateY(8px);background:var(--t);color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.1);opacity:0;pointer-events:none;transition:all .22s;white-space:nowrap;z-index:999}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+#cnv{position:fixed;inset:0;pointer-events:none;z-index:200}
+</style>
+</head>
+<body>
+<canvas id="cnv"></canvas>
+<div class="toast" id="toast"></div>
+
+<div class="screen on" id="home">
+  <div class="hero">
+    <div class="hero-sub">Klausurvorbereitung &#183; Einf&#252;hrung in die Gesundheitspsychologie&#10;SRH Fernhochschule &#183; Prof. Dr. Helmrich &#183; 2026</div>
+    <div class="hero-count"><div class="hero-n" id="hDue">&#8211;</div><div class="hero-l">Karten f&#228;llig</div></div>
+    <div class="hero-streak">&#128293; <span id="hStreak">0</span> Tage-Streak</div>
+  </div>
+  <div class="hbody">
+    <div class="stat-row">
+      <div class="sbox"><div class="si">&#127942;</div><div class="sv" id="sXP">0</div><div class="sl">XP</div></div>
+      <div class="sbox"><div class="si">&#9989;</div><div class="sv" id="sKn">0</div><div class="sl">Beherrscht</div></div>
+      <div class="sbox"><div class="si">&#127919;</div><div class="sv" id="sAc">&#8211;</div><div class="sl">Quote</div></div>
+    </div>
+    <button class="mbtn" onclick="startQ('due')">
+      <span id="mLbl">&#9654; &#220;ben starten</span>
+      <span class="mbadge" id="mBadge">&#8594;</span>
+    </button>
+    <div class="nc">
+      <div class="nc-top">
+        <div class="nc-ico">&#128276;</div>
+        <div><div class="nc-title">T&#228;gliche Erinnerung</div><div class="nc-sub" id="nStat">Noch nicht aktiviert</div></div>
+      </div>
+      <div class="nc-row">
+        <input type="time" id="nTime" value="18:00">
+        <button class="btn btng" onclick="actN()">Aktivieren</button>
+        <button class="btn btnm" onclick="testN()">Test</button>
+      </div>
+    </div>
+    <div>
+      <div class="slbl">Pr&#252;fungsthemen laut Klausurhinweise</div>
+      <div class="tlist" id="tlist"></div>
+    </div>
+    <div>
+      <div class="slbl">Aktivit&#228;t &#8211; letzte 28 Tage</div>
+      <div class="hmap" id="hmap"></div>
+    </div>
+    <button class="btn btno btnbl" onclick="if(confirm('Lernfortschritt zur&#252;cksetzen?'))doReset()">&#128260; Fortschritt zur&#252;cksetzen</button>
+  </div>
+</div>
+
+<div class="screen" id="quiz">
+  <div class="nav">
+    <button class="nav-back" onclick="exitQ()">&#10005;</button>
+    <div style="flex:1"><div class="nav-title" id="qNT">Quiz</div><div style="font-size:11px;color:var(--tu)" id="qNS"></div></div>
+    <div class="nav-right" id="qCnt">1/1</div>
+  </div>
+  <div class="qbar"><div class="qfill" id="qPrg" style="width:0%"></div></div>
+  <div class="qbody">
+    <div class="qcard" id="qCard">
+      <div class="chip-row"><div class="qchip" id="qChip"></div></div>
+      <div class="qtxt" id="qTxt">Lade...</div>
+      <button class="revbtn" id="revBtn" onclick="revealAns()">&#128161; Antwort anzeigen</button>
+      <div class="ansbox" id="ansBox">
+        <div class="ans-inner">
+          <div class="ans-lbl">&#10022; Musterlösung aus dem Studienbrief</div>
+          <div class="ans-text" id="ansTxt"></div>
+        </div>
+      </div>
+    </div>
+    <div class="rarea" id="rArea">
+      <div class="rlbl">Wie gut wusstest du es?</div>
+      <div class="rgrid">
+        <button class="rbtn re" onclick="rate('easy')"><span class="ri">&#9989;</span><span class="rl">Gewusst</span><span class="rs">&#8594; Tage</span></button>
+        <button class="rbtn rm" onclick="rate('med')"><span class="ri">&#129300;</span><span class="rl">Teilweise</span><span class="rs">&#8594; morgen</span></button>
+        <button class="rbtn rh" onclick="rate('hard')"><span class="ri">&#10060;</span><span class="rl">Nochmal</span><span class="rs">&#8594; bald</span></button>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:var(--td);padding-top:2px">&#8592; Wischen: Nochmal &nbsp;|&nbsp; Gewusst &#8594;</div>
+  </div>
+</div>
+
+<div class="screen" id="done">
+  <div class="d-ico" id="dIco">&#127881;</div>
+  <div class="d-h" id="dH">Fertig!</div>
+  <div class="d-s" id="dS"></div>
+  <div class="d-grid">
+    <div class="d-stat"><div class="dv" id="dTot">0</div><div class="dl">Karten</div></div>
+    <div class="d-stat"><div class="dv" id="dEa">0</div><div class="dl">Gewusst</div></div>
+    <div class="d-stat"><div class="dv" id="dXP">+0</div><div class="dl">XP</div></div>
+  </div>
+  <div class="d-acts">
+    <button class="d-p" onclick="goHome()">&#127968; Zur &#220;bersicht</button>
+    <button class="d-s2" onclick="startQ('hard')">&#128260; Schwierige nochmal</button>
+  </div>
+</div>
+
+<div class="screen" id="topics">
+  <div class="nav"><button class="nav-back" onclick="goHome()">&#8249;</button><div class="nav-title">Themen w&#228;hlen</div></div>
+  <div class="ts-grid" id="tsGrid"></div>
+  <div class="sticky-bot"><button class="btn btng btnbl" onclick="startQ('sel')">&#9654; Ausgew&#228;hlte Themen &#252;ben</button></div>
+</div>
+
+<div class="screen" id="stats">
+  <div class="nav"><div class="nav-title" style="margin-left:4px">&#128202; Statistik</div></div>
+  <div class="st-body" id="stBody"></div>
+</div>
+
+<div class="bnav" id="bnav">
+  <button class="bn on" id="bnH" onclick="goMain('home');setNav('bnH')"><span class="ico">&#127968;</span><span class="lbl">Home</span></button>
+  <button class="bn" id="bnT" onclick="goMain('topics');setNav('bnT');buildTS()"><span class="ico">&#127919;</span><span class="lbl">Themen</span></button>
+  <button class="bn" id="bnS" onclick="goMain('stats');setNav('bnS');buildSt()"><span class="ico">&#128202;</span><span class="lbl">Statistik</span></button>
+</div>
+
+<script>
+// Alle Strings als Template Literals (Backticks) – kein Escaping-Problem
+var TOPICS = [
+  {id:"b",  name:"Grundlagen, Krankheitsmodelle, ICF, WHO", icon:"🏥"},
+  {id:"m",  name:"Modelle des Gesundheitsverhaltens (alle)", icon:"🧩"},
+  {id:"s",  name:"Stress, Stresstheorien & Bewältigung",     icon:"⚡"},
+  {id:"sw", name:"Selbstwirksamkeit",                        icon:"💡"},
+  {id:"p",  name:"Patientenverhalten & Non-Adhärenz",        icon:"🩺"},
+  {id:"so", name:"Soziale Integration & Unterstützung",      icon:"🤝"},
+  {id:"c",  name:"Chronische Erkrankungen & Kinder",         icon:"🌱"},
+  {id:"pa", name:"Schmerz & Schmerzbewältigung",             icon:"💊"}
+];
+
+var CARDS = [
+// ── GRUNDLAGEN ──────────────────────────────────────────────
+{id:"b01", t:"b",
+ q:"Was ist das <em>medizinische Modell</em> von Gesundheit? Merkmale und Kritik.",
+ a:`<strong>Definition:</strong> Gesundheit = Abwesenheit von Krankheit (negative Gesundheitsdefinition, Lippke & Renneberg 2006b).
+<ul>
+<li>Ausschließlich biologische Faktoren (Viren, Bakterien, Gene) als Krankheitsursache; psychosoziale Faktoren bleiben unberücksichtigt</li>
+<li>Diagnose nur anhand objektiver Kriterien (z.B. ICD-10); Patient trägt keine Eigenverantwortung; Körper und Geist gelten als getrennte Einheiten</li>
+<li>Behandlung richtet sich ausschließlich auf die somatische Ebene</li>
+</ul>
+<strong>Kritik:</strong> Empirisch überholt: (1) Einfluss psychischer und sozialer Faktoren auf Gesundheit ist heute belegt; (2) Gesundheit kann nicht als bloße Abwesenheit von Krankheit gelten – ein Mensch kann sich nach objektiv überstandener Krankheit subjektiv weiterhin krank fühlen.
+<span class="src">SB Grundlagen Kap. 1.3 | Lippke & Renneberg 2006b, S. 9</span>`},
+
+{id:"b02", t:"b",
+ q:"Beschreiben Sie das <em>biopsychosoziale Modell</em> (Engel 1979): drei Dimensionen, Kontinuum-Konzept.",
+ a:`Das biopsychosoziale Modell (Engel 1979) geht davon aus, dass Krankheit und Gesundheit durch drei Dimensionen bestimmt werden:
+<ul>
+<li><strong>Biologisch:</strong> genetische Faktoren, Körperfunktionen</li>
+<li><strong>Psychisch:</strong> Emotionen, Kognitionen, Bewältigungsverhalten</li>
+<li><strong>Sozial:</strong> finanzielle Ressourcen, soziale Netzwerke, Umwelt</li>
+</ul>
+Gesundheit und Krankheit bewegen sich auf einem <strong>Kontinuum</strong> – kein Alles-oder-Nichts-Prinzip. Schutzfaktoren und Ressourcen sind einbezogen. Subjektive Kriterien fließen in die Diagnose ein. Das Individuum trägt aktive Mitverantwortung für seine Gesundheit. Gesundheit wird als "positiver körperlich-psychosozialer Zustand" definiert, der beeinflussbar ist.
+<span class="src">SB Grundlagen Kap. 1.3 | Lippke & Renneberg 2006b, S. 9–11</span>`},
+
+{id:"b03", t:"b",
+ q:"Nennen Sie die <em>WHO-Gesundheitsdefinition 1948</em> und erläutern Sie die Ottawa-Charta 1986.",
+ a:`<strong>WHO 1948:</strong> "Gesundheit ist ein Zustand völligen psychischen, physischen und sozialen Wohlbefindens und nicht nur das Freisein von Krankheit und Gebrechen."
+<br><br>
+Positive Formulierung – Gesundheit als eigenständiger Zustand, nicht nur Fehlen von Krankheit.
+<br><br>
+<strong>Ottawa-Charta (WHO 1986):</strong> Gesundheitsförderung zielt auf einen Prozess, der allen Menschen "ein höheres Maß an Selbstbestimmung über ihre Gesundheit" ermöglichen soll. Gesundheit steht für ein positives Konzept, das die Bedeutung sozialer und individueller Ressourcen sowie körperlicher Fähigkeiten betont. Gesundheit als positive Ressource für das tägliche Leben – nicht als Lebensziel an sich.
+<span class="src">SB Grundlagen Kap. 1.3 | WHO 1948; WHO 1986</span>`},
+
+{id:"b04", t:"b",
+ q:"Was ist die <em>ICF</em> (WHO 2001)? Vier Komponenten und Unterschied zum ICD-10.",
+ a:`ICF (International Classification of Functioning, Disability and Health) klassifiziert Gesundheit und Behinderung multidimensional – nicht nur Diagnosen, sondern die gesamte Funktionsfähigkeit.
+<br><br>
+<strong>Vier Komponenten:</strong>
+<ul>
+<li><strong>Körperfunktionen und -strukturen:</strong> physiologische und psychologische Körperfunktionen</li>
+<li><strong>Aktivitäten:</strong> Ausführung von Aufgaben und Handlungen</li>
+<li><strong>Partizipation (Teilhabe):</strong> Einbezogensein in Lebenssituationen (Arbeit, Soziales)</li>
+<li><strong>Kontextfaktoren:</strong> Umweltfaktoren (extern) und personenbezogene Faktoren (intern)</li>
+</ul>
+<strong>ICD-10:</strong> Klassifiziert Krankheiten und Störungen (Diagnosen). ICF und ICD-10 sind komplementär.
+<span class="src">SB Grundlagen Kap. 2</span>`},
+
+{id:"b05", t:"b",
+ q:"Welche vier <em>psychologischen Grundlagenfächer</em> nutzt die Gesundheitspsychologie?",
+ a:`<ul>
+<li><strong>Sozialpsychologie:</strong> Einfluss sozialer Normen, sozialer Unterstützung und Gruppen auf Gesundheitsverhalten; viele GP-Theorien stammen aus der Sozialpsychologie (z.B. TRA)</li>
+<li><strong>Kognitionspsychologie:</strong> Informationsverarbeitungsprozesse zwischen Reiz und Verhalten (sog. "Black Box"); Grundlage für Risikowahrnehmung, Einstellungsänderung</li>
+<li><strong>Entwicklungspsychologie:</strong> Gesundheitsrelevante Entwicklungsprozesse über die Lebensspanne (z.B. Kinder mit chron. Erkrankungen in verschiedenen Phasen)</li>
+<li><strong>Persönlichkeitspsychologie:</strong> Persönlichkeitsmerkmale als Risiko- oder Schutzfaktoren (Optimismus, Resilienz, Typ-A-Verhalten; Hammelstein et al. 2006)</li>
+</ul>
+<span class="src">SB Grundlagen Kap. 1.2</span>`},
+
+{id:"b06", t:"b",
+ q:"Was ist das <em>Triadische Modell</em> in der Gesundheitspsychologie und welche Kritik gibt es?",
+ a:`Drei Handlungsebenen gesundheitspsychologischer Maßnahmen:
+<ul>
+<li><strong>Verhaltensebene (individuell):</strong> Veränderung des Verhaltens und der Kognitionen (z.B. Raucherentwöhnung, Stresstraining)</li>
+<li><strong>Verhältnisebene (Setting):</strong> Veränderung von Umwelt- und Strukturbedingungen (z.B. gesunde Kantine, Lärmschutz)</li>
+<li><strong>Gesellschaftlich-politische Ebene:</strong> Kampagnen, Gesetze (z.B. Rauchverbot, Altersgrenze für Alkohol)</li>
+</ul>
+<strong>Kritik:</strong> Grenzen zwischen den Ebenen sind fließend. Wechselwirkungen werden nicht ausreichend modelliert. Isolierte Betrachtung einzelner Ebenen greift zu kurz.
+<span class="src">SB Grundlagen Kap. 2</span>`},
+
+{id:"b07", t:"b",
+ q:"Was sind <em>Laienkonzepte von Gesundheit</em>? Drei Typen nach Herzlich (1973) und deren Relevanz.",
+ a:`Laienvorstellungen unterscheiden sich von wissenschaftlichen Definitionen. Herzlich (1973) identifizierte drei Typen:
+<ul>
+<li><strong>Gesundheit als Gleichgewicht/Wohlbefinden:</strong> positiver Zustand des körperlichen und psychischen Gleichgewichts</li>
+<li><strong>Gesundheit als Reservoir/Kapital:</strong> begrenztes, angeborenes "Kapital" – kann verbraucht werden</li>
+<li><strong>Gesundheit als Funktionsfähigkeit:</strong> "Ich bin gesund, wenn ich meinen Alltag erfüllen kann"</li>
+</ul>
+<strong>Relevanz:</strong> Laienkonzepte beeinflussen Hilfesuchverhalten, Adhärenz und Akzeptanz von Interventionen. Maßnahmen müssen die Überzeugungen der Zielgruppe kennen und berücksichtigen.
+<span class="src">SB Grundlagen Kap. 2 | SB Praxisfelder Kap. 1.1</span>`},
+
+{id:"b08", t:"b",
+ q:"Welche <em>epidemiologischen Kennwerte</em> nutzt die Gesundheitspsychologie? Definieren Sie alle fünf.",
+ a:`<ul>
+<li><strong>Inzidenz:</strong> Anzahl der Neuerkrankungen in einer Population in einem bestimmten Zeitraum (z.B. Brustkrebsneuerkrankungen/100.000 Einwohner/Jahr)</li>
+<li><strong>Prävalenz:</strong> Gesamtzahl aller Krankheitsfälle zu einem bestimmten Zeitpunkt</li>
+<li><strong>Morbidität:</strong> Auftretenshäufigkeit einer Erkrankung in einer Population in einem Zeitraum</li>
+<li><strong>Letalität:</strong> Anteil der Todesfälle an der Gesamtzahl der Erkrankten (Sterbeziffer)</li>
+<li><strong>Relatives Risiko:</strong> Erkrankungsrisiko einer exponierten Population im Vergleich zur nicht-exponierten Kontrollgruppe</li>
+</ul>
+Epidemiologische Daten dienen als Basis für Bedarfsbestimmung und Entwicklung präventiver Maßnahmen (Schüz & Möller 2006).
+<span class="src">SB Grundlagen Kap. 2.5 | Schüz & Möller 2006</span>`},
+
+{id:"b09", t:"b",
+ q:"Unterscheiden Sie <em>Verhaltens- und Verhältnisprävention</em> sowie die drei Präventionsstufen mit je einem Beispiel.",
+ a:`<strong>Verhaltensprävention:</strong> Maßnahmen auf individueller Ebene – Verhaltens-/Kognitionsänderung (z.B. Ernährungsberatung, Raucherentwöhnung).
+<br>
+<strong>Verhältnisprävention:</strong> Veränderung der Umwelt-/Strukturbedingungen (z.B. Altersgrenze für Alkohol, Lärmschutz).
+<br><br>
+<strong>Drei Präventionsstufen:</strong>
+<ul>
+<li><strong>Primärprävention:</strong> Erkrankung verhindern, bevor sie auftritt – bei Gesunden → z.B. Impfkampagnen, Schul-Nichtraucherprogramme</li>
+<li><strong>Sekundärprävention:</strong> Früherkennung bei Risikogruppen → z.B. Krebsvorsorge, Blutdruckscreenings</li>
+<li><strong>Tertiärprävention:</strong> Rückfall und Chronifizierung bei Erkrankten verhindern → z.B. Reha nach Herzinfarkt</li>
+</ul>
+<strong>Hauptkritikpunkt:</strong> Die Grenzen zwischen den drei Stufen sind in der Praxis fließend und nicht immer trennscharf.
+<span class="src">SB Grundlagen Kap. 2.6</span>`},
+
+// ── MODELLE ─────────────────────────────────────────────────
+{id:"m01", t:"m",
+ q:"Unterscheiden Sie <em>Prädiktionsmodelle, Stadienmodelle und integrative Modelle</em> mit je einem Beispiel.",
+ a:`<strong>Kontinuierliche Prädiktionsmodelle (Kap. 3.2–3.5):</strong> Zeigen allgemeine Prädiktoren, die Verhaltensänderung vorhersagen. Personen auf einem Kontinuum. Alle erhalten dieselbe Intervention.
+→ Beispiele: HBM, TRA, TPB, Sozial-kognitive Theorie.
+<br><br>
+<strong>Dynamische Stadienmodelle (Kap. 3.6–3.7):</strong> Personen durchlaufen qualitativ unterschiedliche Phasen mit verschiedenen Bedürfnissen. Interventionen müssen stadienspezifisch sein.
+→ Beispiele: TTM (Prochaska & DiClemente), PAPM (Weinstein).
+<br><br>
+<strong>Integrative Modelle (Kap. 3.8):</strong> Vereinen Annahmen beider Ansätze.
+→ Beispiel: HAPA (Schwarzer 2004).
+<br><br>
+Praktische Konsequenz: Im Prädiktionsmodell bekommen alle dieselbe Intervention; im Stadienmodell muss das Programm phasenspezifisch sein (Schwarzer 2004, S. 39 ff.).
+<span class="src">SB Grundlagen Kap. 3.1 | Knoll et al. 2017b</span>`},
+
+{id:"m02", t:"m",
+ q:"Erläutern Sie das <em>Health Belief Model (HBM)</em>: alle Kernvariablen und Kritik.",
+ a:`Das HBM (Rosenstock 1966; Becker 1974) ist eines der frühesten Modelle. Die Wahrscheinlichkeit einer Verhaltensänderung variiert mit der Wahrnehmung der gesundheitlichen Bedrohung und einer Kosten-Nutzen-Bilanz.
+<br><br>
+<strong>Kernvariablen:</strong>
+<ul>
+<li><strong>Wahrgenommene Anfälligkeit/Verwundbarkeit:</strong> "In meiner Familie ist noch keiner an Lungenkrebs gestorben" – Wie wahrscheinlich ist eigene Erkrankung?</li>
+<li><strong>Wahrgenommene Schwere:</strong> Wie gravierend sind die Konsequenzen?</li>
+<li><strong>Wahrgenommener Nutzen:</strong> Bringt die Maßnahme wirklich etwas?</li>
+<li><strong>Wahrgenommene Barrieren:</strong> Welche Hindernisse stehen entgegen? (Kosten-Nutzen-Abwägung)</li>
+<li><strong>Cues to Action:</strong> Auslöser – intern (Symptome) oder extern (Medienberichte, Arztempfehlung)</li>
+<li><strong>Selbstwirksamkeit</strong> (spätere Ergänzung von Rosenstock)</li>
+</ul>
+<strong>Kritik:</strong> Vernachlässigt emotionale Faktoren, Gewohnheiten und soziale Einflüsse. Eher für einmalige Entscheidungen (z.B. Impfung) geeignet.
+<span class="src">SB Grundlagen Kap. 3.2 | Rosenstock 1966; Becker 1974</span>`},
+
+{id:"m03", t:"m",
+ q:"Beschreiben Sie die <em>Theory of Reasoned Action (TRA)</em>: Struktur, Überzeugungen, Bilanzierungsprozesse und Schwachpunkt.",
+ a:`Verhaltensabsicht (Intention) ist das unmittelbare Vorläuferkonstrukt des Verhaltens. Intention wird bestimmt durch:
+<br><br>
+<strong>1. Einstellung gegenüber dem Verhalten:</strong> Persönliche Bewertung des spezifischen Verhaltens für die eigene Person (nicht allgemeine Einstellung!). Basiert auf persönlichen Überzeugungen × deren Bewertung → Bilanzierungsprozess.
+<br><br>
+<strong>2. Subjektive Normen:</strong> Wahrgenommener Erwartungsdruck wichtiger Bezugspersonen (z.B. "Meine Frau erwartet, dass ich aufhöre zu rauchen"). Basiert auf normativen Überzeugungen × Einwillungsbereitschaft → Bilanzierungsprozess.
+<br><br>
+Beide Faktoren werden unterschiedlich gewichtet (Faktor "Wichtigkeit").
+<br><br>
+<strong>Schwachpunkt (Schwarzer 2004, S. 50 ff.):</strong> Gilt nur für Situationen unter vollständiger willentlicher Kontrolle. Unkontrollierbare Situationen kann sie nicht abbilden. → Führte zur Erweiterung: TPB.
+<span class="src">SB Grundlagen Kap. 3.3</span>`},
+
+{id:"m04", t:"m",
+ q:"Beschreiben Sie die <em>TPB (Theory of Planned Behavior, Ajzen 1985)</em>: neue Variable, beide Pfade, Kontrollüberzeugungen.",
+ a:`Die TPB erweitert die TRA um die <strong>wahrgenommene Verhaltenskontrolle</strong> = wahrgenommene Schwierigkeit, ein Verhalten ausführen zu können (Knoll et al. 2017b).
+<br><br>
+<strong>Zwei Pfade:</strong>
+<ul>
+<li><strong>Indirekter Pfad:</strong> beeinflusst die Intention ("Ich traue mir zu, das Rauchen aufzugeben → ich bilde die Absicht")</li>
+<li><strong>Direkter Pfad:</strong> beeinflusst direkt das Verhalten ("Ich traue es mir zu → höre direkt damit auf")</li>
+</ul>
+<strong>Kontrollüberzeugungen</strong> (Grundlage): internale (eigene Fähigkeiten, Ressourcen) + externale (Hindernisse, Gelegenheiten) → Bilanzierungsprozess.
+<br><br>
+<strong>Befundlage:</strong> Metaanalyse Conner & Sparks 2007: r = .26–.51. Vorbehalt: meist querschnittlich → keine Kausalaussagen.
+<span class="src">SB Grundlagen Kap. 3.4 | Ajzen 1985</span>`},
+
+{id:"m05", t:"m",
+ q:"Beschreiben Sie die <em>Sozial-kognitive Theorie (Bandura 2004)</em>: Kernaussage und vier Quellen der Selbstwirksamkeit.",
+ a:`Die SKT ist der TPB ähnlich: <strong>Ziele (Intentionen)</strong> beeinflussen das Verhalten. Ziele werden von der <strong>Selbstwirksamkeitserwartung</strong> bestimmt = Überzeugung, ein Verhalten auch in schwierigen Situationen erfolgreich ausführen zu können.
+<br><br>
+Selbstwirksamkeit bestimmt, wie viel Anstrengung aufgewendet und wie lange bei Hindernissen durchgehalten wird. Neben den Zielen beeinflussen auch <strong>Ergebniserwartungen</strong> (Konsequenzen des Verhaltens) die Zielsetzung.
+<br><br>
+<strong>4 Quellen der Selbstwirksamkeitserwartung (Bandura 2004):</strong>
+<ol>
+<li><strong>Direkte Eigenerfahrungen (mastery experiences):</strong> eigene Erfolgserlebnisse – stärkste Quelle</li>
+<li><strong>Stellvertretende Erfahrungen (Modelllernen):</strong> andere bei vergleichbaren Aufgaben beobachten</li>
+<li><strong>Verbale Überzeugung/Ermutigung:</strong> Zuspruch durch wichtige Personen ("Das schaffst du!")</li>
+<li><strong>Physiologische Zustände:</strong> Körpersignale als Kompetenzhinweise (z.B. ruhige Herzrate)</li>
+</ol>
+<span class="src">SB Grundlagen Kap. 3.5 | Bandura 2004; Lippke & Renneberg 2006c, S. 42</span>`},
+
+{id:"m06", t:"m",
+ q:"Erläutern Sie alle <em>fünf Stages of Change (TTM)</em> und warum Interventionen stadienspezifisch sein müssen.",
+ a:`Das TTM (Prochaska & DiClemente) geht davon aus, dass Personen in verschiedenen Phasen unterschiedliche Bedürfnisse haben. Stadienspezifische Interventionen sind nötig!
+<ol>
+<li><strong>Präkontemplation:</strong> Kein Problembewusstsein, keine Absicht in 6 Monaten → Maßnahme: Bewusstsein wecken, Risikowahrnehmung stärken</li>
+<li><strong>Kontemplation:</strong> Problem erkannt, Abwägen von Vor-/Nachteilen, Absicht in 6 Monaten → Entscheidungswaage stärken</li>
+<li><strong>Vorbereitung:</strong> Konkrete Planung, Absicht im nächsten Monat → Handlungsplanung unterstützen</li>
+<li><strong>Aktion:</strong> Aktive Verhaltensänderung, noch nicht stabil (unter 6 Monate) → Rückfallprävention</li>
+<li><strong>Aufrechterhaltung:</strong> Stabiles Verhalten seit über 6 Monaten → Rückfallmanagement</li>
+</ol>
+Rückfälle sind normal und Teil des Prozesses – keine lineare Progression zwingend.
+<span class="src">SB Grundlagen Kap. 3.6</span>`},
+
+{id:"m07", t:"m",
+ q:"Beschreiben Sie das <em>PAPM (Prozessmodell präventiven Handelns, Weinstein & Sandman 1992)</em>: alle 7 Stufen und Unterschied zum TTM.",
+ a:`Das PAPM legt im Gegensatz zum TTM keine Zeitkriterien fest, sondern definiert Stadien durch psychologische Kriterien.
+<br><br>
+<strong>7 Stufen:</strong>
+<ol>
+<li>Unkenntnis: Person kennt die Gesundheitsbedrohung nicht → im TTM nicht vorhanden!</li>
+<li>Kenntnis ohne persönlichen Bezug: weiß von der Gefahr, denkt nicht daran im Bezug auf sich selbst (unrealistischer Optimismus)</li>
+<li>Entscheidungsprozess: Abwägen, ob man handeln will</li>
+<li>Entscheidung, NICHT zu handeln → im TTM nicht enthalten!</li>
+<li>Entscheidung zu handeln</li>
+<li>Handlung</li>
+<li>Aufrechterhaltung</li>
+</ol>
+<strong>Unterschied TTM:</strong> PAPM unterscheidet Personen ohne Wissen (Stufe 1) von solchen mit Wissen ohne persönlichen Bezug (Stufe 2). Erfasst bewusste Nicht-Handlungsentscheidung (Stufe 4).
+<br><strong>Kritik am PAPM:</strong> Bisher empirisch kaum untersucht.
+<span class="src">SB Grundlagen Kap. 3.7 | Weinstein & Sandman 1992</span>`},
+
+{id:"m08", t:"m",
+ q:"Erläutern Sie das <em>HAPA-Modell (Schwarzer 2004)</em>: zwei Phasen und den Intention-Behavior-Gap.",
+ a:`Integratives Modell – kombiniert Prädiktions- und Stadienmodellannahmen.
+<br><br>
+<strong>Phase 1 – Präintentionale/Motivationale Phase</strong> (Non-Intender → Intender):
+<ul>
+<li>Risikowahrnehmung: subjektive Schwere + Vulnerabilität</li>
+<li>Handlungsergebniserwartungen: Abwägen positiver/negativer Konsequenzen</li>
+<li>Selbstwirksamkeitserwartung: direkter Einfluss auch auf Planung und Verhalten</li>
+</ul>
+→ Führt zur Zielsetzung/Intention.
+<br><br>
+<strong>Phase 2 – Postintentionale/Volitionale Phase</strong> (Intender → Aktiver):
+<ul>
+<li><strong>Handlungsplanung (präaktional):</strong> Wann, wo, wie? (Implementation Intentions: z.B. "Jeden Dienstag nach der Arbeit gehe ich laufen")</li>
+<li><strong>Bewältigungsplanung:</strong> Barrieren antizipieren ("Wenn es regnet, gehe ich ins Fitnessstudio")</li>
+<li><strong>Handlungskontrolle (aktional):</strong> Selbstbeobachtung, Selbstregulation</li>
+</ul>
+<strong>Intention-Behavior-Gap:</strong> Absicht allein reicht nicht – die volitionale Phase überbrückt die Lücke zwischen Intention und Verhalten.
+<span class="src">SB Grundlagen Kap. 3.8 | Schwarzer 2004, S. 90 ff.</span>`},
+
+{id:"m09", t:"m",
+ q:"Beschreiben Sie das <em>Rückfallmodell (Marlatt & Gordon)</em>: High-Risk-Situations und Abstinenz-Verletzungs-Effekt.",
+ a:`Rückfall ist ein vorhersehbarer, normalisierbarer Teil des Veränderungsprozesses – kein Versagen.
+<br><br>
+<strong>High-Risk-Situations (HRS):</strong> erhöhen die Rückfallwahrscheinlichkeit:
+<ul>
+<li>Negative emotionale Zustände (Stress, Traurigkeit, Ärger)</li>
+<li>Soziale Versuchungssituationen (andere rauchen/trinken)</li>
+<li>Interpersonelle Konflikte</li>
+</ul>
+<strong>HRS erfolgreich bewältigt:</strong> → Selbstwirksamkeit steigt → geringeres zukünftiges Rückfallrisiko.
+<br><br>
+<strong>HRS nicht bewältigt:</strong> → erster Fehltritt → <strong>Abstinenz-Verletzungs-Effekt (AVE):</strong> Person schreibt Fehltritt einem inneren Kontrollverlust zu, empfindet Schuld und Versagen → vollständiger Rückfall.
+<br><br>
+<strong>Intervention:</strong> Rückfallpräventionstraining: Identifikation persönlicher HRS, Strategien für HRS trainieren, kognitive Neubewertung des AVE (Fehltritt ≠ vollständiger Rückfall).
+<span class="src">SB Grundlagen Kap. 3.9 | Marlatt & Gordon</span>`},
+
+// ── SELBSTWIRKSAMKEIT ────────────────────────────────────────
+{id:"sw1", t:"sw",
+ q:"Was ist <em>Selbstwirksamkeitserwartung</em> nach Bandura? Definition, vier Quellen, Abgrenzung zu Kontrollüberzeugungen.",
+ a:`<strong>Definition:</strong> Selbstwirksamkeitserwartung beschreibt, wie sehr eine Person davon überzeugt ist, ein bestimmtes Verhalten auch in schwierigen Situationen erfolgreich ausführen zu können. Sie bestimmt Anstrengungsbereitschaft und Ausdauer bei Hindernissen.
+<br><br>
+<strong>4 Quellen (Bandura 2004):</strong>
+<ol>
+<li><strong>Direkte Eigenerfahrungen (mastery experiences):</strong> eigene Erfolgserlebnisse – stärkste Quelle. Erfolge steigern, Misserfolge verringern Selbstwirksamkeit.</li>
+<li><strong>Stellvertretende Erfahrungen (Modelllernen):</strong> Beobachten, wie andere ähnliche Aufgaben meistern</li>
+<li><strong>Verbale Überzeugung:</strong> Zuspruch wichtiger Personen ("Das schaffst du!")</li>
+<li><strong>Physiologische Zustände:</strong> Körpersignale als Kompetenzhinweise (ruhige Herzrate = Zuversicht)</li>
+</ol>
+<strong>Abgrenzung Kontrollüberzeugungen (Rotter – Locus of Control):</strong> Generalisierte Überzeugung, ob Ereignisse durch eigenes Handeln (internal) oder äußere Faktoren/Zufall (external) bestimmt werden. Selbstwirksamkeit = spezifisch + handlungsbezogen; Kontrollüberzeugungen = generalisiert + ereignisbezogen.
+<span class="src">SB Grundlagen Kap. 3.5, 6.2.3 | Bandura 2004</span>`},
+
+{id:"sw2", t:"sw",
+ q:"Welche Rolle spielt <em>Selbstwirksamkeit</em> in den verschiedenen Gesundheitsmodellen?",
+ a:`Selbstwirksamkeit ist eines der meistbelegten Konstrukte in der GP und findet sich in mehreren Modellen:
+<ul>
+<li><strong>SKT (Bandura):</strong> Selbstwirksamkeit bestimmt direkt Zielsetzung und Verhalten</li>
+<li><strong>TPB (Ajzen):</strong> Teil der wahrgenommenen Verhaltenskontrolle</li>
+<li><strong>HAPA (Schwarzer):</strong> Entscheidend in der Motivationsphase (Zielbildung) UND in der volitionalen Phase (Handlungsplanung) – direkter Einfluss auf Planung und Verhalten</li>
+<li><strong>HBM:</strong> Spätere Ergänzung – ohne den Glauben, eine Maßnahme durchführen zu können, wird sie nicht ergriffen</li>
+<li><strong>Rückfallmodell (Marlatt):</strong> Erfolgreiche Bewältigung von High-Risk-Situations stärkt Selbstwirksamkeit; gescheiterte Bewältigung schwächt sie (AVE)</li>
+</ul>
+<strong>Steigerung:</strong> Erfolgserlebnisse durch schrittweise, erreichbare Ziele; Modelllernen (Vorbilder); verbale Ermutigung; günstige physiologische Zustände durch Entspannung.
+<span class="src">SB Grundlagen Kap. 3.5, 6.2.3</span>`},
+
+// ── STRESS ──────────────────────────────────────────────────
+{id:"s01", t:"s",
+ q:"Welche drei <em>Klassen von Stresstheorien</em> gibt es (Laux 1983)? Definieren und Beispiel je.",
+ a:`<strong>1. Reaktionsbezogene Theorien:</strong> Stress = physiologisches Reaktionsmuster auf Stressoren. Im Fokus steht das Reaktionsmuster, nicht der auslösende Reiz. → Beispiel: Allgemeines Adaptationssyndrom (Selye), Fight-or-Flight (Cannon 1915).
+<br><br>
+<strong>2. Stimulusbezogene Theorien:</strong> Stress wird über bestimmte Reizgegebenheiten (Stressoren) definiert. Untersucht, wie stark Lebensereignisse eine soziale Reorientierung erfordern. → Beispiel: Kritische Lebensereignisse (Holmes & Rahe 1967), Daily Hassles (Kanner et al. 1981).
+<br><br>
+<strong>3. Transaktionale Theorien:</strong> Stress als kognitiv orientierter Prozess des Zusammenspiels zwischen Person und Umwelt. Subjektive Bewertung ist entscheidend. → Beispiel: Kognitives Stressmodell (Lazarus & Folkman 1984).
+<span class="src">SB Grundlagen Kap. 4.1 | Laux 1983</span>`},
+
+{id:"s02", t:"s",
+ q:"Beschreiben Sie das <em>Allgemeine Adaptationssyndrom (AAS, Selye)</em>: drei Phasen, Hormonsysteme, Kritik.",
+ a:`Selye (1946) definierte Stress als unspezifische Reaktion des Organismus auf unterschiedliche Stressoren.
+<br><br>
+<strong>Hypothalamus-Hypophysen-Nebennierenrinde-System (HPA-Achse):</strong> → Ausschüttung von Kortisol.
+<ul>
+<li><strong>Alarmreaktion:</strong> Schockphase (Blutdruckabfall, Herzrasen, Unterzuckerung, verringerte Widerstandskraft) + Gegenschockphase (erhöhte ACTH-Ausschüttung als Gegenreaktion)</li>
+<li><strong>Widerstandsphase:</strong> Individuum setzt sich gegen Stressoren zur Wehr; Energiereserven werden aktiviert</li>
+<li><strong>Erschöpfungsphase:</strong> Reserven aufgebraucht; Anpassung bricht zusammen; dauerhafte Kortisolausschüttung beeinträchtigt Organismus</li>
+</ul>
+<strong>Cannon (1915) – Hypothalamus-Nebennierenmark-System:</strong> Katecholamine (Adrenalin, Noradrenalin) → Fight-or-Flight-Syndrom.
+<br><br>
+<strong>Kritik:</strong> Bei Menschen laufen Stressreaktionen nicht so unspezifisch ab wie im Tiermodell. Kognitive Bewertungsprozesse werden vernachlässigt.
+<span class="src">SB Grundlagen Kap. 4.1 | Selye 1946; Cannon 1915</span>`},
+
+{id:"s03", t:"s",
+ q:"Erläutern Sie das <em>transaktionale Stressmodell (Lazarus & Folkman 1984)</em>: Primär- und Sekundärbewertung, Ergebnisse, Kritik.",
+ a:`Im Zentrum steht nicht der Stressor selbst, sondern die <strong>subjektive kognitive Bewertung</strong>.
+<br><br>
+<strong>Primärbewertung:</strong> "Ist die Situation für mich relevant?" Ergebnisse:
+<ul>
+<li>Irrelevant</li>
+<li>Positiv-benign (kein Stress)</li>
+<li>Stressbezogen: Schaden/Verlust (bereits eingetreten, eher Traurigkeit), Bedrohung (zukünftig, eher Angst), Herausforderung (zukünftig, Gewinnmöglichkeit, weniger Angst)</li>
+</ul>
+<strong>Sekundärbewertung:</strong> "Welche Ressourcen habe ich?" → bestimmt Copingreaktion.
+<br><br>
+Neubewertungen möglich → fortlaufender Transaktionsprozess.
+<br><br>
+<strong>Kritik (Schwarzer 2004, S. 158):</strong> Noch nicht als Ganzes experimentell testbar. Primär-/Sekundärbewertung schwer messbar und trennbar. Vernachlässigt biologische Stresskomponenten. Trotz Kritik: das einflussreichste Stressmodell.
+<span class="src">SB Grundlagen Kap. 4.1 | Lazarus & Folkman 1984</span>`},
+
+{id:"s04", t:"s",
+ q:"Unterscheiden Sie <em>problemorientiertes und emotionsorientiertes Coping</em>. Was ist die Goodness-of-Fit-Hypothese? Welche Formen sind effektiv?",
+ a:`<strong>Problemorientiertes Coping:</strong> Aktiver Eingriff in die Situation, um das Problem zu überwinden (z.B. Prüfung gewissenhaft vorbereiten). Setzt Kontrollierbarkeit der Situation voraus.
+<br><br>
+<strong>Emotionsorientiertes Coping:</strong> Regulierung der Emotionen ohne direkte Situationsveränderung (z.B. Neubewertung: "Das ist nicht so wichtig"; Ablenkung). V.a. bei schwer kontrollierbaren Situationen.
+<br><br>
+<strong>Goodness-of-Fit-Hypothese (Kaluza & Vögele 1999):</strong> Keine Strategie ist per se überlegen. Wirksamkeit hängt von der Passung zwischen Strategie und Situation ab. Am besten: breites, flexibles Repertoire.
+<br><br>
+<strong>Effektive Formen (Kaluza 1996):</strong> Besseres Befinden durch: aktive/problemlösende Bewältigung in veränderlichen Situationen, Suche nach sozialer Unterstützung, kognitives Umstrukturieren (positive Neubewertungen), Bagatellisierung. Kontraproduktiv: Selbstabwertung, Selbstbeschuldigung, dauerhaftes Ignorieren/Vermeiden.
+<span class="src">SB Grundlagen Kap. 4.2 | Kaluza 1996; Kaluza & Vögele 1999</span>`},
+
+{id:"s05", t:"s",
+ q:"Beschreiben Sie die <em>Stressbewältigungsprogramme SIT, SRT und GET.ON</em>: Grundlage, Ziel, Aufbau.",
+ a:`<strong>SIT – Stressimpfungstraining (Meichenbaum & Schattenburg 2012):</strong>
+Grundlage: transaktionales Stressmodell (Lazarus). Ziel: Bewältigungsstrategien aufbauen, Widerstandskräfte stärken.
+<br>3 Phasen: (1) Informationsphase, (2) Lern-/Übungsphase, (3) Anwendungs-/Posttrainingsphase.
+<br><br>
+<strong>SRT – Stress-Resistenz-Training (Schulz & Jansen 2007):</strong>
+Kein Stressbewältigungs-, sondern ein Stressresistenztraining. Grundlage: transaktionales Modell + Vulnerabilitätskonzept (Zubin & Spring 1977). Drei Komponenten (Stressresistenz):
+<ul>
+<li>Kompetenz zur Stressprävention (stresspräventive Anforderungsselektion)</li>
+<li>Kompetenz zur Stressbewertung (Scheiternsrisiko realistisch einschätzen)</li>
+<li>Kompetenz zur Stressbewältigung (Stressreaktionen reduzieren)</li>
+</ul>
+Evaluation: quasi-experimentelles Design, nach 25 Wochen signifikant höhere Stressbewältigungskompetenz und weniger körperliche Beschwerden (Jansen 2005).
+<br><br>
+<strong>GET.ON Stress:</strong> Internetbasiertes kognitiv-behaviorales Programm; selbstgesteuert; RCTs belegen signifikante Stressreduktion vs. Wartekontrollgruppe. Beispiel für Digitalisierung in der psych. Gesundheitsförderung (SB Grundlagen Kap. 7.2).
+<span class="src">SB Grundlagen Kap. 4.2, 7.2 | Meichenbaum 2012; Schulz & Jansen 2007</span>`},
+
+{id:"s06", t:"s",
+ q:"Was ist das <em>Effort-Reward-Imbalance-Modell (ERI, Siegrist)</em>? Kernvariablen und Gesundheitsfolgen.",
+ a:`Das ERI-Modell (Siegrist 1996) beschreibt berufliche Gratifikationskrisen als spezifische Form arbeitsbezogenen Stresses.
+<br><br>
+<strong>Effort (Verausgabung):</strong>
+<ul>
+<li>Extern: Zeitdruck, Unterbrechungen, Überstunden, hohe Verantwortung</li>
+<li>Intern: übersteigerte Verausgabungsneigung (<strong>Over-Commitment</strong>) – exzessives Engagement, schlecht abschalten können</li>
+</ul>
+<strong>Reward (Belohnung):</strong> Gehalt, Wertschätzung, Arbeitsplatzsicherheit, Aufstiegsmöglichkeiten und Statuskontrolle.
+<br><br>
+<strong>Kernannahme:</strong> Chronisches Ungleichgewicht (Effort dauerhaft größer als Reward) → anhaltende Stressreaktion → erhöhtes Risiko für kardiovaskuläre Erkrankungen, Depression, Burnout.
+<br><br>
+<strong>Over-Commitment</strong> als verstärkender Faktor: Personen mit exzessivem Engagement sind besonders gefährdet.
+<span class="src">SB Grundlagen Kap. 4.3 | Siegrist 1996</span>`},
+
+// ── PATIENTENVERHALTEN ──────────────────────────────────────
+{id:"p01", t:"p",
+ q:"Welche Faktoren beeinflussen die <em>Symptomwahrnehmung</em>? Warum sucht nur ein Drittel der Betroffenen einen Arzt auf?",
+ a:`70–90% der Menschen bemerken hin und wieder Symptome, die medizinisch behandelt werden könnten – aber nur ein Drittel sucht einen Arzt auf (Morrison & Bennett 2012).
+<br><br>
+<strong>Faktoren der Symptomwahrnehmung:</strong>
+<ul>
+<li><strong>Aufmerksamkeit:</strong> Begrenzte Verarbeitungskapazität (Pennebaker 2011): Je stärker auf Umweltreize fokussiert, desto weniger Aufmerksamkeit für Körpersignale. Umgekehrt: hypochondrische Vigilanz = mehr Symptome wahrgenommen.</li>
+<li><strong>Soziale Einflüsse:</strong> Wahrscheinlichkeitsverteilungen leiten Wahrnehmung (z.B. Herzinfarkt gilt als "Männerkrankheit" → Frauen erkennen eigene Herzinfarkt-Symptome seltener)</li>
+<li><strong>Persönlichkeit/Emotionen:</strong> Negative Stimmung, Depressivität, hoher Neurotizismus → mehr Symptome wahrgenommen und pessimistischer bewertet (Leventhal et al. 1996)</li>
+<li><strong>Kognitionen/Coping-Stil:</strong> Abwehrende Kognitionen → Symptome seltener wahrgenommen (Myers 1998)</li>
+</ul>
+<span class="src">SB Praxisfelder Kap. 1.1 | Morrison & Bennett 2012; Pennebaker 2011; Leventhal et al. 1996</span>`},
+
+{id:"p02", t:"p",
+ q:"Beschreiben Sie die <em>5 Dimensionen mentaler Krankheitsrepräsentationen</em> (Leventhal, Common Sense Model) und deren Einfluss auf das Verhalten.",
+ a:`Menschen ordnen wahrgenommene Symptome einem Krankheitsbild zu und bilden mentale Repräsentationen. Diese beeinflussen ihr weiteres Verhalten.
+<br><br>
+<strong>5 Dimensionen (Salewski & Klauer 2009):</strong>
+<ol>
+<li><strong>Identität:</strong> Bezeichnung der Erkrankung + assoziierte Symptome</li>
+<li><strong>Ursachen:</strong> Kausale Attribution – genetisch, emotional, Umwelteinflüsse, eigenes Verhalten?</li>
+<li><strong>Zeitlicher Verlauf:</strong> Akut oder chronisch? Episodisch oder kontinuierlich? Kurz- oder langfristig?</li>
+<li><strong>Konsequenzen:</strong> Erwartete körperliche, emotionale, soziale, berufliche Folgen</li>
+<li><strong>Heilbarkeit/Kontrollierbarkeit:</strong> Behandelbar durch mich oder den Arzt?</li>
+</ol>
+<strong>Einfluss auf Verhalten (Morrison & Bennett 2012):</strong> Arztbesuch und Inanspruchnahme, Adhärenz, Arbeitsunfähigkeit und Rückkehr zur Arbeit, Lebensqualität.
+<br>Dimensionen sind nicht unabhängig – z.B. beeinflusst Kontrollierbarkeit die erwarteten Konsequenzen.
+<span class="src">SB Praxisfelder Kap. 1.1 | Salewski & Klauer 2009</span>`},
+
+{id:"p03", t:"p",
+ q:"Beschreiben Sie den Prozess des <em>Krankheitsverhaltens</em>: vier Phasen und klinisch relevante Befunde zur Verzögerung.",
+ a:`<strong>4 Phasen bis zur professionellen Hilfe (Salewski & Klauer 2009):</strong>
+<ol>
+<li><strong>Symptomwahrnehmung/-bewertung + intrapsychische Verarbeitung:</strong> Wird das Symptom bemerkt und als bedrohlich eingestuft?</li>
+<li><strong>Symptomäußerung und Selbstmedikation:</strong> Gespräch mit nahestehenden Personen; Hausmittel ausprobieren</li>
+<li><strong>Inanspruchnahme des informellen Hilfesystems:</strong> soziales Netzwerk (Familie, Freunde)</li>
+<li><strong>Inanspruchnahme professioneller/paraprofessioneller Hilfen:</strong> Arzt, Notaufnahme, Selbsthilfegruppe</li>
+</ol>
+Nicht immer linear – bei offensichtlichen, starken Symptomen direkt Schritt 4.
+<br><br>
+<strong>Klinisch relevanter Befund:</strong> 40% der Patienten, die einen Herzinfarkt vermuteten und wussten, dass das ernst zu nehmen ist, warteten über eine Stunde bevor sie einen Arzt anriefen (Kentsch et al. 2002). Mögliche fatale Konsequenz.
+<span class="src">SB Praxisfelder Kap. 1.2 | Salewski & Klauer 2009; Kentsch et al. 2002</span>`},
+
+{id:"p04", t:"p",
+ q:"Was ist <em>Adhärenz</em>? Welche Ursachen hat Non-Adhärenz und welche Maßnahmen gibt es?",
+ a:`<strong>Adhärenz</strong> (früher: Compliance) = Ausmaß, in dem das Patientenverhalten mit den vereinbarten medizinischen Empfehlungen übereinstimmt. Impliziert aktive Partnerschaft.
+<br><br>
+<strong>Formen der Non-Adhärenz:</strong> unbeabsichtigt (Vergessen, Missverständnisse), beabsichtigt (bewusste Ablehnung), initiale Non-Adhärenz (Verschreibung nie eingelöst), Persistenzprobleme (Abbruch).
+<br><br>
+<strong>Ursachen und Maßnahmen:</strong>
+<ul>
+<li><strong>Komplexes Regime →</strong> Vereinfachung (1x täglich statt mehrfach); schriftliche Therapiepläne</li>
+<li><strong>Mangelndes Verständnis →</strong> Psychoedukation; Teach-back-Methode (Patient erklärt in eigenen Worten zurück)</li>
+<li><strong>Nebenwirkungen →</strong> Dosisanpassung; Alternativen anbieten; proaktive Information</li>
+<li><strong>Vergessen →</strong> Erinnerungs-Apps, Wochendosierer, Routinen etablieren</li>
+<li><strong>Fehlende Überzeugung (geringe wahrgenommene Schwere) →</strong> Motivational Interviewing; Risikowahrnehmung stärken</li>
+<li><strong>Fehlende soziale Unterstützung →</strong> Angehörige einbeziehen; Selbsthilfegruppen</li>
+</ul>
+<span class="src">SB Praxisfelder Kap. 1.4</span>`},
+
+{id:"p05", t:"p",
+ q:"Wie beeinflusst die <em>Patient-Arzt-Interaktion</em> die Adhärenz? Drei förderliche Kommunikationsstrategien.",
+ a:`Qualität der Patient-Arzt-Beziehung ist ein zentraler Prädiktor für Adhärenz.
+<br><br>
+<strong>3 förderliche Strategien:</strong>
+<ul>
+<li><strong>Partizipative Entscheidungsfindung (Shared Decision Making):</strong> Patient aktiv in Therapieentscheidungen einbeziehen → stärkt Eigenverantwortung, Akzeptanz, intrinsische Motivation</li>
+<li><strong>Verständliche Kommunikation:</strong> Kein Fachjargon; Teach-back-Methode (Patient erklärt zurück, was er verstanden hat → Missverständnisse werden aufgedeckt)</li>
+<li><strong>Motivational Interviewing (MI):</strong> Explorative, empathische Gesprächsführung; Ambivalenzen erkunden; Autonomie und intrinsische Motivation stärken; nicht konfrontieren</li>
+</ul>
+Kontraproduktiv: paternalistischer Stil, Zeitdruck, mangelndes Eingehen auf die Patientenperspektive.
+<span class="src">SB Praxisfelder Kap. 1.3, 1.4</span>`},
+
+// ── SOZIALE UNTERSTÜTZUNG ────────────────────────────────────
+{id:"so1", t:"so",
+ q:"Nennen Sie die <em>vier Dimensionen sozialer Unterstützung</em> mit Beispiel und unterscheiden Sie soziale Integration von sozialer Unterstützung.",
+ a:`<strong>4 Dimensionen sozialer Unterstützung (funktionale Aspekte):</strong>
+<ul>
+<li><strong>Emotionale Unterstützung:</strong> Empathie, Zuneigung, aktives Zuhören → "Ich habe Freunde, die auch mal gut zuhören können, wenn ich mich aussprechen möchte" (F-SozU Item)</li>
+<li><strong>Praktische/instrumentelle Unterstützung:</strong> Alltagshilfen → Nachbar fährt zum Arzt; Kollege übernimmt Aufgaben</li>
+<li><strong>Informationelle Unterstützung:</strong> Ratschläge, Rückmeldungen → Arzt erklärt verständlich Behandlungsoptionen</li>
+<li><strong>Bewertendes Feedback (appraisal support):</strong> Bestätigung der eigenen Wahrnehmung → Kollege bestätigt, dass eine Entscheidung sinnvoll war</li>
+</ul>
+<strong>Unterschied:</strong>
+<ul>
+<li><strong>Soziale Integration (strukturell):</strong> objektive Netzwerkmerkmale (Größe, Kontakthäufigkeit, Dichte) → eher Haupteffekte auf Gesundheit</li>
+<li><strong>Soziale Unterstützung (funktional):</strong> qualitative Inhalte der Beziehungen → eher Puffereffekte bei Stress</li>
+</ul>
+<span class="src">SB Praxisfelder Kap. 2.1</span>`},
+
+{id:"so2", t:"so",
+ q:"Was besagen <em>Pufferhypothese und Haupteffekthypothese</em> sozialer Unterstützung? Welches Fazit zieht der Studienbrief?",
+ a:`<strong>Haupteffekthypothese:</strong> Soziale Unterstützung wirkt unabhängig von Stress direkt positiv auf die Gesundheit. Das Eingebettetsein in ein soziales Netzwerk (soziale Integration) ist per se gesundheitsförderlich.
+<br><br>
+<strong>Pufferhypothese (Stress-Buffer):</strong> Soziale Unterstützung schützt nur dann vor negativen Gesundheitsfolgen, wenn tatsächlich Stress vorhanden ist. Sie "puffert" den negativen Stresseffekt ab. Ohne Stress kein zusätzlicher Effekt.
+<br><br>
+<strong>Fazit des Studienbriefs (Kienle et al. 2006, S. 117):</strong> "Beide Modelle haben ihre Berechtigung. Während die Haupteffekte vorwiegend dann auftreten, wenn soziale Integration mit Gesundheit in Zusammenhang gebracht wird, kann man bei der erhaltenen Unterstützung meist Puffereffekte (oder gar keine bzw. kleine Effekte) finden. Bei der wahrgenommenen Unterstützung zeigen sich mehrfach beide Effekte."
+<span class="src">SB Praxisfelder Kap. 2.3 | Kienle et al. 2006, S. 117</span>`},
+
+{id:"so3", t:"so",
+ q:"Beschreiben Sie die <em>Messung sozialer Unterstützung</em>: F-SozU, BSSS und ISU-DYA.",
+ a:`<strong>F-SozU (Fydrich et al. 1999):</strong> Vier Hauptskalen: (1) Emotionale Unterstützung, (2) Praktische Unterstützung, (3) Soziale Integration, (4) Soziale Belastung (Negativskala). Kurz- (K-14, K-22) und Langversion. Wahrgenommene Unterstützung korreliert negativ mit sozialer Belastung.
+<br><br>
+<strong>BSSS (Berliner Social-Support-Skalen, Schulz & Schwarzer 2003):</strong> Sechs Skalen:
+<ol>
+<li>Wahrgenommene Unterstützung (zeitunabhängig, stabiles Merkmal)</li>
+<li>Erhaltene Unterstützung (retrospektiv, situationsnah)</li>
+<li>Geleistete Unterstützung (Geberperspektive)</li>
+<li>Bedürfnis nach Unterstützung (Präferenz)</li>
+<li>Suche nach Unterstützung (aktives Mobilisieren)</li>
+<li>Protektives Abfedern (andere vor Belastungen schützen; z.B. "Ich habe schlechte Nachrichten vom Patienten ferngehalten")</li>
+</ol>
+<strong>ISU-DYA (Winkeler & Klauer 2003):</strong> Erfasst Bewältigungsverhalten in Zweierbeziehungen (Dyaden) aus beiden Perspektiven (Empfänger und Geber). Zwei Skalen: Mobilisierung von Unterstützung, Soziale Unterstützungsleistung.
+<span class="src">SB Praxisfelder Kap. 2.2</span>`},
+
+{id:"so4", t:"so",
+ q:"Was sind <em>soziale Nicht-Unterstützung, soziale Unterminierung</em> und die Schattenseiten sozialer Unterstützung?",
+ a:`<strong>Soziale Nicht-Unterstützung:</strong> Mangel an Unterstützung sagt mangelndes Wohlbefinden besser vorher, als Unterstützung vorhandenes Wohlbefinden vorhersagen kann (Schwarzer 2004). Das Fehlen von Unterstützung schadet stärker als Unterstützung nützt.
+<br><br>
+<strong>Soziale Unterminierung (Vinokur & van Ryn 1993):</strong> Aktiver Angriff eines Interaktionspartners – nicht bloßer Entzug von Unterstützung. Drei Elemente: (1) negative Bewertung von Aktivitäten/Eigenschaften, (2) negativer Affekt, (3) Behinderung bei Zielerreichung.
+<br><br>
+<strong>Schattenseiten sozialer Unterstützung:</strong>
+<ul>
+<li>Scham und Selbstwertverlust (Kienle et al. 2006): Nicht revanchieren können; Gefühl des Unvermögens</li>
+<li>Abhängigkeit: Lernende Hilflosigkeit durch übertriebenes Engagement des Gebers</li>
+<li>Reziprozitätsprobleme und Konflikte im Netzwerk</li>
+</ul>
+Fazit: Das Konstrukt ist sehr komplex und muss differenziert betrachtet werden (SB Praxisfelder Kap. 2.4).
+<span class="src">SB Praxisfelder Kap. 2.4 | Schwarzer 2004; Vinokur & van Ryn 1993; Kienle et al. 2006</span>`},
+
+// ── CHRONISCHE ERKRANKUNGEN & KINDER ────────────────────────
+{id:"c01", t:"c",
+ q:"Definieren Sie <em>akute und chronische Erkrankungen</em> und nennen Sie die psychosozialen Anforderungen chronischer Erkrankungen.",
+ a:`<strong>Akute Erkrankung:</strong> Kurzfristig, abrupter Beginn, vollständige Genesung erwartet (typisch unter 3 Monate). Beispiele: Grippe, Appendizitis.
+<br><br>
+<strong>Chronische Erkrankung:</strong> Lang andauernd (über 3–6 Monate) oder rezidivierend, meist keine vollständige Heilung möglich. Beispiele: Diabetes, Asthma, Krebs, Herzerkrankungen.
+<br>In Deutschland: ca. <strong>39% der Bevölkerung</strong> leiden an einer chron. Erkrankung (Robert Koch Institut 2009), Frauen (42%) häufiger als Männer (36%). Drei Viertel der Todesfälle entfallen auf chron. Erkrankungen.
+<br><br>
+<strong>Psychosoziale Anforderungen chronischer Erkrankungen:</strong>
+<ul>
+<li>Dauerhafte Anpassung des Lebensalltags und der Lebensziele</li>
+<li>Langfristige Therapieadhärenz (Medikamente, Lebensstiländerungen)</li>
+<li>Umgang mit Unsicherheit, möglichen Schüben und veränderter Identität</li>
+<li>Belastung des gesamten Familiensystems</li>
+</ul>
+<span class="src">SB Praxisfelder Kap. 5.1, 3.1 | Robert Koch Institut 2009</span>`},
+
+{id:"c02", t:"c",
+ q:"Psychosoziale Belastungen von Kindern mit chron. Erkrankungen nach <em>Entwicklungsphasen</em>: Kleinkind vs. Grundschulkind (am Beispiel Diabetes).",
+ a:`Belastungen wirken häufig nicht direkt, sondern durch Beeinträchtigung alterstypischer Entwicklungsaufgaben (Noecker & Petermann 2013).
+<br><br>
+<strong>Kleinkindalter (0–6 J.) – Diabetes-Beispiel:</strong>
+<ul>
+<li>Bindungsstörung: Schmerzhafte Behandlung durch die Bezugsperson (Injektionen) macht körperliche Nähe ambivalent (Sicherheit + Schmerz; Golden et al. 1985)</li>
+<li>KH-Aufenthalte und Trennungen verstärken Trennungsangst</li>
+<li>Protektives Verhalten generalisiert sich auf gesunde Bereiche → Hemmung der Selbstständigkeit und des Kompetenzvertrauens</li>
+<li>Modelllernen: Unsicherheit der Eltern überträgt sich auf das Kind</li>
+</ul>
+<strong>Grundschulalter (6–12 J.) – Diabetes-Beispiel:</strong>
+<ul>
+<li>Schulische Aufgaben und soziale Anforderungen konkurrieren mit Behandlungspflichten → Vergessen der Blutzuckermessung</li>
+<li>Manche Kinder setzen Über-/Unterzuckerung bewusst ein, um Regeln zu unterlaufen oder Belohnungen zu erhalten (Giordano & Rainwater 1986)</li>
+<li>Stigmatisierungsrisiko; soziale Vergleiche; Gefühl "anders" zu sein</li>
+<li>Empfehlung (Weist et al. 1993): Eltern sollen Management strukturieren und kontrollieren; mit Kind aushandeln, welche Aufgaben schrittweise in seine Verantwortung übergehen</li>
+</ul>
+<span class="src">SB Praxisfelder Kap. 3.2 | Noecker & Petermann 2013; Weist et al. 1993</span>`},
+
+{id:"c03", t:"c",
+ q:"Welche <em>gesundheitspsychologischen Interventionen</em> gibt es bei Kindern mit chronischen Erkrankungen? Kindzentrierte vs. familienbezogene Ansätze.",
+ a:`<strong>Kindzentrierte Interventionen (Kap. 3.3.2):</strong>
+<ul>
+<li>Psychoedukation: kindgerechte Wissensvermittlung (z.B. Bibliotherapie)</li>
+<li>Entspannungsverfahren: Atemübungen, geführte Imagination</li>
+<li>Kognitive Techniken: Ablenkung (Fokus auf konkrete Dinge), positive Selbstinstruktionen, Neubewertung</li>
+<li>Spieltherapie: besonders für Kleinkinder und Vorschulkinder</li>
+<li>Soziales Kompetenztraining: für Jugendliche – Behandlungspflicht und soziale Integration vereinbaren</li>
+</ul>
+<strong>Familienbezogene Interventionen / Elternarbeit (Kap. 3.3.3):</strong>
+<ul>
+<li>Elterntraining: Umgang mit krankheitsbedingtem Fehlverhalten; Verhandlungen mit dem Kind über Verantwortungsübernahme</li>
+<li>Entlastungsangebote (Respite Care): Erholung für pflegende Elternteile</li>
+<li>Familientherapie: Kommunikation und Rollenverteilung verbessern</li>
+</ul>
+<strong>Prävention:</strong> Früherkennung/Screenings, Psychoedukation, Verhältnisprävention, settingbezogene Strategien (Christiansen & Röhrle 2013).
+<span class="src">SB Praxisfelder Kap. 3.3 | Christiansen & Röhrle 2013</span>`},
+
+{id:"c04", t:"c",
+ q:"Was ist <em>gesundheitsbezogene Lebensqualität (HRQoL)</em>? Vier Dimensionen und Messinstrumente.",
+ a:`Lebensqualität ist ein multidimensionales, subjektives Konstrukt (Patient-Reported Outcome) – erfasst Wohlbefinden und Funktionsfähigkeit aus Patientenperspektive.
+<br><br>
+<strong>Vier Dimensionen der HRQoL:</strong>
+<ul>
+<li><strong>Physisch:</strong> körperliche Funktionsfähigkeit, Symptombelastung, Energie</li>
+<li><strong>Psychisch:</strong> emotionales Wohlbefinden, Angst, Depression, kognitive Funktion</li>
+<li><strong>Sozial:</strong> Teilhabe an sozialen Aktivitäten, Qualität der Beziehungen</li>
+<li><strong>Rollenfunktion:</strong> Arbeit, Haushalt, Freizeitgestaltung</li>
+</ul>
+<strong>Instrumente:</strong> SF-36 (generisch, 36 Items, 8 Subskalen), WHOQOL-BREF (WHO, 26 Items), krankheitsspezifisch: KIDSCREEN (Kinder/Jugendliche), EORTC (Krebspatienten).
+<span class="src">SB Praxisfelder Kap. 5.2</span>`},
+
+{id:"c05", t:"c",
+ q:"Beschreiben Sie das <em>Phasenmodell nach Kübler-Ross</em> (Sterben und Tod) und die wichtige Einschränkung.",
+ a:`Kübler-Ross (1969) beschrieb fünf Phasen der Auseinandersetzung mit dem eigenen Sterben:
+<ol>
+<li><strong>Verleugnung:</strong> "Das kann nicht sein." – Schockreaktion als Schutz</li>
+<li><strong>Wut/Zorn:</strong> "Warum gerade ich?" – Aggression gegen Umfeld und Behandler</li>
+<li><strong>Verhandeln:</strong> Suche nach Wegen, das Schicksal abzuwenden (Gebete, Versprechen)</li>
+<li><strong>Depression:</strong> Antizipatorische Trauer über bisherige und zukünftige Verluste; sozialer Rückzug</li>
+<li><strong>Akzeptanz:</strong> Annahme der eigenen Endlichkeit; innere Ruhe</li>
+</ol>
+<strong>Wichtige Einschränkung:</strong> Das Modell ist <em>beschreibend, nicht normativ</em>. Es gibt keinen "richtigen" Weg zu sterben. Phasen verlaufen nicht linear, können übersprungen oder mehrfach durchlaufen werden. Empirisch unzureichend belegt; kann dazu führen, dass Sterbende an einem Verlaufsschema gemessen werden.
+<span class="src">SB Praxisfelder Kap. 5.4 | Kübler-Ross 1969</span>`},
+
+// ── SCHMERZ ─────────────────────────────────────────────────
+{id:"pa1", t:"pa",
+ q:"IASP-Definition von <em>Schmerz</em> – und welche drei Dimensionen hat Schmerz?",
+ a:`<strong>IASP-Definition:</strong> "Schmerz ist eine unangenehme sensorische und emotionale Erfahrung, die mit tatsächlichen oder potenziellen Gewebeschädigungen verbunden ist oder in solchen Begriffen beschrieben wird."
+<br><br>
+Schmerz ist immer subjektiv. Wuchse & Bach (2011, S. 412): "Die Unterscheidung zwischen körperlichen und seelischen Schmerzen ist nicht trennscharf und ist heute nicht mehr sinnvoll."
+<br><br>
+<strong>Drei Dimensionen:</strong>
+<ul>
+<li><strong>Sensorisch-diskriminativ:</strong> Ort, Qualität (brennend, stechend, dumpf, pulsierend), Intensität</li>
+<li><strong>Motivational-affektiv:</strong> Emotionale Tönung (Leiden); beeinflusst durch Stimmung, Angst, Erwartungen</li>
+<li><strong>Kognitiv-evaluativ:</strong> Bewertung und Interpretation; Aufmerksamkeit, Erwartungen, Vorerfahrungen</li>
+</ul>
+<span class="src">SB Praxisfelder Kap. 4.1 | IASP; Wuchse & Bach 2011, S. 412</span>`},
+
+{id:"pa2", t:"pa",
+ q:"Erläutern Sie die <em>Gate-Control-Theorie</em> (Melzack & Wall 1965): Mechanismus, Faktoren, Grenzen.",
+ a:`Die Theorie revolutionierte das Schmerzverständnis: Schmerzsignale werden im Rückenmark moduliert.
+<br><br>
+<strong>Mechanismus (SB Praxisfelder Kap. 4.2):</strong> Nozizeptoren leiten Schmerzimpulse über die Wirbelsäule zum Gehirn (öffnet Pforte). Gleichzeitig senden Kognitionen und Emotionen Signale vom Gehirn zurück zur Pforte und können deren Öffnungszustand modulieren.
+<br><br>
+<strong>Tor öffnend (mehr Schmerz):</strong> Angst ("Die Wunde ist so tief, ich muss sofort zum Arzt"), Katastrophisieren, Depression, Fokus auf Schmerz, Inaktivität/Schonung.
+<br><br>
+<strong>Tor schließend (weniger Schmerz):</strong> Ablenkung durch konkrete Gedanken ("Was muss ich als nächstes kochen?"), positive Emotionen, Entspannung, Bewegung, soziale Unterstützung.
+<br><br>
+<strong>Grenze:</strong> Erklärt Phantomschmerz nicht (Schmerz ohne Nozizeptor-Aktivierung). → Entwicklung der Neuromatrix (Melzack 1999).
+<span class="src">SB Praxisfelder Kap. 4.2 | Melzack & Wall 1965</span>`},
+
+{id:"pa3", t:"pa",
+ q:"Was ist die <em>Neuromatrix-Theorie</em> (Melzack 1999) und wie erklärt sie Phantomschmerz?",
+ a:`Weiterentwicklung der Gate-Control-Theorie für Phänomene ohne periphere Reizung.
+<br><br>
+<strong>Kerngedanke:</strong> Das Gehirn besitzt ein weitverzweigtes Netzwerk aus Neuronen (Neuromatrix), das sensorische, emotionale und kognitive Informationen integriert und zu einer "Neurosignatur" verarbeitet.
+<br><br>
+<strong>Zwei Komponenten:</strong>
+<ul>
+<li><strong>Body-Self-Matrix:</strong> verarbeitet und integriert eingehende sensorische und emotionale Informationen</li>
+<li><strong>Handlungs-Neuromatrix (Action-Neuromatrix):</strong> entwickelt Verhaltensreaktionen</li>
+</ul>
+<strong>Phantomschmerz:</strong> Das Netzwerk ist so "vorverdrahtet", dass der Körper annimmt, die amputierte Gliedmaße bewegen zu können. Sendet Signale dorthin → kein Feedback → immer stärkere Signale → werden als Schmerz wahrgenommen. Schmerz entsteht im Gehirn, nicht in der Peripherie. Modell empirisch noch wenig untersucht (Derbyshire 2000).
+<span class="src">SB Praxisfelder Kap. 4.2 | Melzack 1999; Derbyshire 2000</span>`},
+
+{id:"pa4", t:"pa",
+ q:"Unterscheiden Sie <em>akuten und chronischen Schmerz</em> und beschreiben Sie Chronifizierungsmechanismen.",
+ a:`<strong>Akuter Schmerz:</strong> Zeitlich begrenzt (unter 3–6 Monate); biologische Warnfunktion (signalisiert Gewebeschaden); klingt mit Heilung ab; biologisch adaptiv.
+<br><br>
+<strong>Chronischer Schmerz:</strong> Dauerhaft über 3–6 Monate oder rezidivierend; verliert die Warnfunktion; "verselbstständigt" sich als eigenständiges Krankheitsbild; mit zunehmender Chronifizierung spielen psychosoziale Faktoren eine immer größere Rolle. Schmerz geht nicht mehr linear mit dem medizinischen Befund einher (Wuchse & Bach 2011).
+<br><br>
+<strong>Chronifizierungsmechanismen:</strong>
+<ul>
+<li>Vermeidungs- und Schonverhalten: "Schonung ist bei Schmerz immer gut" – gilt als bedeutendster Faktor (Kröner-Herwig 2009)</li>
+<li>Lernerfahrungen: Zuwendung durch nahestehende Personen = soziale Verstärkung des Schmerzverhaltens</li>
+<li>Dysfunktionale Überzeugungen, Katastrophisieren</li>
+<li>Allgemein hohe Stressbelastung ohne Bewältigungsstrategien</li>
+<li>Persönlichkeitsfaktoren (Emotionsregulationsprobleme, Traumata)</li>
+</ul>
+<span class="src">SB Praxisfelder Kap. 4.1, 4.2 | Wuchse & Bach 2011; Kröner-Herwig 2009</span>`},
+
+{id:"pa5", t:"pa",
+ q:"Was umfasst eine <em>Schmerzanamnese</em>? Alle wesentlichen Dimensionen.",
+ a:`Eine umfassende Schmerzanamnese ist die Grundlage der Schmerzdiagnostik und Therapieplanung:
+<ul>
+<li><strong>Lokalisation:</strong> Wo? Strahlt aus?</li>
+<li><strong>Qualität/Charakter:</strong> brennend, stechend, dumpf, pulsierend, drückend, reißend?</li>
+<li><strong>Intensität:</strong> Numerische Ratingskala (NRS 0–10) oder Visuelle Analogskala (VAS)</li>
+<li><strong>Zeitlicher Verlauf:</strong> Seit wann? Dauerschmerz oder episodisch? Tagesverlauf?</li>
+<li><strong>Auslöser und modifizierende Faktoren:</strong> Was verstärkt den Schmerz? Was lindert ihn?</li>
+<li><strong>Beeinträchtigung des Alltags:</strong> Schlaf, Arbeit, soziale Aktivitäten, Mobilität, Lebensqualität</li>
+<li><strong>Psychosoziale Faktoren:</strong> Stimmung, Katastrophisieren, Angst vor Bewegung (Kinesiophobie), Stress</li>
+<li><strong>Bisherige Behandlungen und deren Wirksamkeit</strong></li>
+</ul>
+Ergänzend: Schmerztagebuch, Pain Catastrophizing Scale (PCS, Sullivan), Tampa Scale for Kinesiophobia (TSK).
+<span class="src">SB Praxisfelder Kap. 4.3</span>`},
+
+{id:"pa6", t:"pa",
+ q:"Was ist das <em>Fear-Avoidance-Modell</em> (Vlaeyen & Linton 2000) und was ist <em>Katastrophisieren</em> (Sullivan)?",
+ a:`<strong>Katastrophisieren (Sullivan):</strong> Kognitive Bewertung von Schmerz als extrem bedrohlich, unkontrollierbar, das Schlimmste. Stärkster psychologischer Prädiktor für Chronifizierung.
+<br>3 Komponenten: Rumination (ständige Gedanken an Schmerz), Hilflosigkeit, Magnifikation (Überbewertung der Bedrohlichkeit).
+<br><br>
+<strong>Fear-Avoidance-Modell (Vlaeyen & Linton 2000) – der Teufelskreis:</strong>
+<ol>
+<li>Schmerzerlebnis → katastrophisierende Bewertung</li>
+<li>→ Schmerzangst + Angst vor erneuter Verletzung (Kinesiophobie)</li>
+<li>→ Vermeidungsverhalten + Hypervigilanz auf Körpersignale</li>
+<li>→ Körperlicher Abbau (Deconditioning), Depressivität, soziale Isolation</li>
+<li>→ Verstärkung von Schmerz und Behinderung → zurück zu 1</li>
+</ol>
+<strong>Therapiekonsequenz:</strong> Graded Exposure (stufenweise Konfrontation mit angstauslösenden Bewegungen) + kognitive Umstrukturierung von Schadensüberzeugungen.
+<span class="src">SB Praxisfelder Kap. 4.2 | Sullivan; Vlaeyen & Linton 2000</span>`},
+
+{id:"pa7", t:"pa",
+ q:"Beschreiben Sie die <em>multimodale kognitiv-behaviorale Schmerztherapie</em>: Ziel, alle Bausteine, Evidenz.",
+ a:`Goldstandard bei chronischen Schmerzen (Kröner-Herwig 2009).
+<br><br>
+<strong>Ziel:</strong> Nicht primär Schmerzreduktion, sondern <strong>Schmerzbewältigung</strong> und Verbesserung der Lebensqualität. Da Patienten meist ein biologisches Schmerzverständnis mitbringen, steht Patientenschulung am Anfang.
+<br><br>
+<strong>Bausteine (Kröner-Herwig 2009, S. 441):</strong>
+<ul>
+<li>Selbstbeobachtung (Schmerztagebuch)</li>
+<li>Patientenschulung: biopsychosoziales Schmerzverständnis aufbauen</li>
+<li>Entspannung als Schmerz- und Stressbewältigungsstrategie</li>
+<li>Stärkung von Selbstwirksamkeitsüberzeugungen und Akzeptanz</li>
+<li>Erweiterung des Handlungsspielraums / körperliches Training (Abbau von Vermeidungsverhalten)</li>
+<li>Umstrukturierung ungünstiger Überzeugungen (z.B. "Schonung ist immer gut")</li>
+<li>Stärkung der Problemlösefähigkeiten</li>
+<li>Selbstbewusster, autonomer Umgang mit dem Gesundheitswesen</li>
+</ul>
+<strong>Ergänzende Techniken:</strong> Ablenkung (konkrete Gedanken); Biofeedback (besonders effektiv bei Migräne und Spannungskopfschmerz, Andrasik 2007); Hypnose (Trance = verringerte Muskelspannung).
+<br><strong>Evidenz:</strong> Effekte eher klein bis moderat (Kröner-Herwig 2005).
+<span class="src">SB Praxisfelder Kap. 4.3 | Kröner-Herwig 2009, S. 439 ff.</span>`}
+];
+
+// ═══ STATE ══════════════════════════════════════════════════
+var S = {streak:0,lastD:null,xp:0,tot:0,easy:0,
+         cards:{},selT:TOPICS.map(function(t){return t.id;}),
+         nTime:"18:00",nOn:false,act:{}};
+function ldS(){
+  try{var r=localStorage.getItem("gpq8");if(r){var d=JSON.parse(r);for(var k in d)S[k]=d[k];}}catch(e){}
+  CARDS.forEach(function(c){if(!S.cards[c.id])S.cards[c.id]={nr:0,iv:0,ease:2.5,rat:null};});
+}
+function svS(){try{localStorage.setItem("gpq8",JSON.stringify(S));}catch(e){}}
+
+// ═══ SPACED REP ══════════════════════════════════════════════
+function nowMs(){return Date.now();}
+function dms(d){return d*86400000;}
+function ds(o){return new Date(Date.now()+(o||0)*86400000).toISOString().slice(0,10);}
+function applyR(id,r){
+  var cd=S.cards[id],td=ds();
+  S.act[td]=(S.act[td]||0)+1; S.tot++;
+  if(r==="easy"){S.easy++;cd.iv=cd.iv<1?1:cd.iv*(cd.ease||2.5);cd.ease=Math.min(3,(cd.ease||2.5)+.1);cd.nr=nowMs()+dms(Math.round(cd.iv));S.xp+=10;}
+  else if(r==="med"){cd.iv=Math.max(.5,(cd.iv||1)*.7);cd.nr=nowMs()+dms(1);S.xp+=5;}
+  else{cd.iv=0;cd.ease=Math.max(1.3,(cd.ease||2.5)-.2);cd.nr=nowMs()+dms(.007);S.xp+=2;}
+  cd.rat=r;
+  var yd=ds(-1);
+  if(S.lastD!==td){S.streak=(S.lastD===yd)?S.streak+1:1;S.lastD=td;}
+  svS();
+}
+function getDue(){return CARDS.filter(function(c){return S.cards[c.id].nr<=nowMs();});}
+function cntDue(){return getDue().length;}
+function getDeck(mode){
+  var p=CARDS;
+  if(mode==="due"){p=getDue();if(!p.length)p=CARDS;}
+  else if(mode==="sel"){p=CARDS.filter(function(c){return S.selT.indexOf(c.t)>=0;});if(!p.length)p=CARDS;}
+  else if(mode==="hard"){p=CARDS.filter(function(c){return S.cards[c.id].rat==="hard";});if(!p.length)p=getDue().length?getDue():CARDS;}
+  return p.slice().sort(function(){return Math.random()-.5;});
+}
+
+// ═══ QUIZ ════════════════════════════════════════════════════
+var Q={deck:[],i:0,easy:0,med:0,hard:0,xp:0};
+var revealed=false,sx=0,sy=0;
+
+function startQ(mode){
+  var d=getDeck(mode);
+  if(!d.length){showToast("Keine Karten!");return;}
+  Q={deck:d,i:0,easy:0,med:0,hard:0,xp:0};
+  revealed=false;
+  showCard();
+  goTo("quiz");
+}
+
+function showCard(){
+  var card=Q.deck[Q.i];
+  if(!card){finishQ();return;}
+  var tp=null;
+  for(var i=0;i<TOPICS.length;i++){if(TOPICS[i].id===card.t){tp=TOPICS[i];break;}}
+  var pct=Q.deck.length?(Q.i/Q.deck.length*100):0;
+  document.getElementById("qPrg").style.width=pct+"%";
+  document.getElementById("qCnt").textContent=(Q.i+1)+" / "+Q.deck.length;
+  document.getElementById("qNT").textContent=(tp?tp.icon+" ":"")+" Quiz";
+  document.getElementById("qNS").textContent=tp?tp.name:"";
+  document.getElementById("qChip").textContent=tp?tp.icon+" "+tp.name:card.t;
+  document.getElementById("qTxt").innerHTML=card.q;
+  document.getElementById("ansTxt").innerHTML=card.a;
+  document.getElementById("ansBox").classList.remove("open");
+  var rb=document.getElementById("revBtn");
+  rb.style.display="flex";
+  rb.innerHTML="&#128161; Antwort anzeigen";
+  document.getElementById("rArea").classList.remove("open");
+  revealed=false;
+}
+
+function revealAns(){
+  if(revealed)return;
+  revealed=true;
+  navigator.vibrate&&navigator.vibrate(20);
+  document.getElementById("ansBox").classList.add("open");
+  document.getElementById("revBtn").style.display="none";
+  document.getElementById("rArea").classList.add("open");
+}
+
+function rate(r){
+  navigator.vibrate&&navigator.vibrate(30);
+  var card=Q.deck[Q.i];
+  applyR(card.id,r);
+  if(r==="easy"){Q.easy++;Q.xp+=10;}
+  else if(r==="med"){Q.med++;Q.xp+=5;}
+  else{Q.hard++;Q.xp+=2;}
+  var el=document.getElementById("qCard");
+  el.style.transition="transform .2s,opacity .2s";
+  el.style.transform="translateX(-50px)";
+  el.style.opacity="0";
+  setTimeout(function(){
+    el.style.transition="none";
+    el.style.transform="translateX(40px)";
+    el.style.opacity="0";
+    Q.i++;
+    showCard();
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        el.style.transition="transform .2s,opacity .2s";
+        el.style.transform="";
+        el.style.opacity="1";
+      });
+    });
+  },180);
+}
+
+document.getElementById("quiz").addEventListener("touchstart",function(e){
+  if(!revealed)return;
+  sx=e.touches[0].clientX;
+  sy=e.touches[0].clientY;
+},{passive:true});
+
+document.getElementById("quiz").addEventListener("touchend",function(e){
+  if(!revealed)return;
+  var dx=e.changedTouches[0].clientX-sx;
+  var dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)<50&&Math.abs(dy)<50)return;
+  if(Math.abs(dx)>Math.abs(dy)){
+    if(dx>50)rate("easy");
+    else if(dx<-50)rate("hard");
+  }else{
+    if(dy<-50)rate("med");
+  }
+},{passive:true});
+
+function exitQ(){goHome();}
+
+function finishQ(){
+  var tot=Q.deck.length;
+  var pct=tot?Math.round(Q.easy/tot*100):0;
+  var ico,h,s;
+  if(pct>=80){ico="🌟";h="Ausgezeichnet!";s=pct+"% gewusst – weiter so!";}
+  else if(pct>=60){ico="💪";h="Gut gemacht!";s=pct+"% gewusst. Schwierige nochmal üben.";}
+  else{ico="📚";h="Weiter üben!";s=pct+"% gewusst. Nicht aufgeben!";}
+  document.getElementById("dIco").textContent=ico;
+  document.getElementById("dH").textContent=h;
+  document.getElementById("dS").textContent=s;
+  document.getElementById("dTot").textContent=tot;
+  document.getElementById("dEa").textContent=Q.easy;
+  document.getElementById("dXP").textContent="+"+Q.xp;
+  goTo("done");
+  if(pct>=60)doConfetti();
+  refreshHome();
+}
+
+// ═══ HOME ════════════════════════════════════════════════════
+function refreshHome(){
+  var d=cntDue();
+  document.getElementById("hDue").textContent=d||CARDS.length;
+  document.getElementById("hStreak").textContent=S.streak;
+  document.getElementById("sXP").textContent=S.xp;
+  var kn=CARDS.filter(function(c){return S.cards[c.id]&&S.cards[c.id].rat==="easy";}).length;
+  document.getElementById("sKn").textContent=kn;
+  document.getElementById("sAc").textContent=S.tot?Math.round(S.easy/S.tot*100)+"%":"–";
+  var ml=document.getElementById("mLbl"),mb=document.getElementById("mBadge");
+  if(d>0){ml.textContent="▶ "+d+" Karten wiederholen";mb.textContent="Fällig →";}
+  else{ml.textContent="▶ Alle "+CARDS.length+" Karten üben";mb.textContent="Kein Rückstand ✓";}
+  var tl=document.getElementById("tlist");
+  tl.innerHTML="";
+  TOPICS.forEach(function(tp){
+    var cards=CARDS.filter(function(c){return c.t===tp.id;});
+    var k=cards.filter(function(c){return S.cards[c.id]&&S.cards[c.id].rat==="easy";}).length;
+    var pct=Math.round(k/cards.length*100);
+    var el=document.createElement("div");
+    el.className="titem";
+    el.innerHTML="<div class='ti-ico'>"+tp.icon+"</div>"
+      +"<div class='ti-body'><div class='ti-name'>"+tp.name+"</div>"
+      +"<div class='ti-bar'><div class='pb'><div class='pf' style='width:"+pct+"%'></div></div>"
+      +"<div class='pt'>"+k+"/"+cards.length+"</div></div></div>";
+    (function(id){el.onclick=function(){S.selT=[id];svS();startQ("sel");};})(tp.id);
+    tl.appendChild(el);
+  });
+  var hm=document.getElementById("hmap");
+  hm.innerHTML="";
+  for(var i=27;i>=0;i--){
+    var d2=ds(-i),cnt=S.act[d2]||0;
+    var lv=cnt===0?0:cnt<5?1:cnt<10?2:cnt<20?3:4;
+    var e=document.createElement("div");
+    e.className="hd hd"+lv;
+    e.title=d2+(cnt?" · "+cnt+" Karten":"");
+    hm.appendChild(e);
+  }
+  if(S.nOn)document.getElementById("nStat").textContent="✅ Täglich um "+S.nTime+" Uhr";
+  if(S.nTime)document.getElementById("nTime").value=S.nTime;
+}
+
+// ═══ TOPIC SELECT ════════════════════════════════════════════
+function buildTS(){
+  var g=document.getElementById("tsGrid");
+  g.innerHTML="";
+  TOPICS.forEach(function(tp){
+    var cards=CARDS.filter(function(c){return c.t===tp.id;});
+    var on=S.selT.indexOf(tp.id)>=0;
+    var el=document.createElement("div");
+    el.className="ts-item"+(on?" on":"");
+    el.innerHTML="<div class='ts-ico'>"+tp.icon+"</div>"
+      +"<div style='flex:1'><div class='ts-name'>"+tp.name+"</div>"
+      +"<div class='ts-ct'>"+cards.length+" Karten</div></div>"
+      +"<div class='ts-chk'>"+(on?"✓":"")+"</div>";
+    (function(id,e2){
+      e2.onclick=function(){
+        var i=S.selT.indexOf(id);
+        if(i>=0)S.selT.splice(i,1);else S.selT.push(id);
+        svS();buildTS();
+      };
+    })(tp.id,el);
+    g.appendChild(el);
+  });
+}
+
+// ═══ STATS ═══════════════════════════════════════════════════
+function lv(xp){
+  if(xp<50)return"🌱 Anfänger";
+  if(xp<200)return"📖 Lernender";
+  if(xp<500)return"💪 Fortgeschritten";
+  if(xp<1000)return"🎓 Experte";
+  return"🌟 Meister";
+}
+function buildSt(){
+  var b=document.getElementById("stBody");
+  var kn=CARDS.filter(function(c){return S.cards[c.id]&&S.cards[c.id].rat==="easy";}).length;
+  var rows=[
+    ["🏆","XP gesamt",S.xp+" XP",lv(S.xp)],
+    ["🔥","Tage-Streak",S.streak+" Tage","Täglich üben"],
+    ["📊","Beantwortet",S.tot,"Karten total"],
+    ["🎯","Trefferquote",S.tot?Math.round(S.easy/S.tot*100)+"%":"–",S.tot+" Versuche"],
+    ["✅","Beherrscht",kn+" / "+CARDS.length,"Karten (Stufe Gewusst)"]
+  ];
+  var h="<div class='slbl'>Gesamtfortschritt</div><div class='st-card'>";
+  rows.forEach(function(r){
+    h+="<div class='st-row'><div class='sr-ico'>"+r[0]+"</div>"
+      +"<div class='sr-b'><div class='sr-t'>"+r[1]+"</div><div class='sr-s'>"+r[3]+"</div></div>"
+      +"<div class='sr-v'>"+r[2]+"</div></div>";
+  });
+  h+="</div><div class='slbl'>Nach Thema</div><div class='st-card'>";
+  TOPICS.forEach(function(tp){
+    var cards=CARDS.filter(function(c){return c.t===tp.id;});
+    var k=cards.filter(function(c){return S.cards[c.id]&&S.cards[c.id].rat==="easy";}).length;
+    var pct=Math.round(k/cards.length*100);
+    h+="<div class='st-row'><div class='sr-ico'>"+tp.icon+"</div>"
+      +"<div class='sr-b'><div class='sr-t'>"+tp.name+"</div>"
+      +"<div class='sr-s'>"+pct+"% · "+cards.length+" Karten</div></div>"
+      +"<div class='sr-v'>"+k+"/"+cards.length+"</div></div>";
+  });
+  h+="</div>";
+  b.innerHTML=h;
+}
+
+// ═══ NOTIFICATIONS ═══════════════════════════════════════════
+function actN(){
+  S.nTime=document.getElementById("nTime").value;
+  if(!("Notification" in window)){showToast("Browser ohne Benachrichtigungs-Support");return;}
+  Notification.requestPermission().then(function(p){
+    if(p==="granted"){
+      S.nOn=true;svS();schedN();
+      document.getElementById("nStat").textContent="✅ Täglich um "+S.nTime+" Uhr";
+      showToast("🔔 Erinnerung aktiviert!");
+    }else{
+      showToast("Berechtigung verweigert");
+    }
+  });
+}
+function testN(){
+  if(Notification.permission!=="granted"){showToast("Bitte erst aktivieren");return;}
+  new Notification("🧠 GP Quiz – Test",{body:cntDue()>0?cntDue()+" Karten bereit!":"Weiter so!"});
+}
+function schedN(){
+  if(!S.nOn||Notification.permission!=="granted")return;
+  var p=(S.nTime||"18:00").split(":");
+  var h=parseInt(p[0]),m=parseInt(p[1]);
+  var tgt=new Date();tgt.setHours(h,m,0,0);
+  var ms=tgt-Date.now();if(ms<0)ms+=86400000;
+  clearTimeout(window._nt);
+  window._nt=setTimeout(function(){
+    new Notification("🧠 Gesundheitspsychologie – Lernzeit!",{
+      body:cntDue()>0?cntDue()+" Karten zur Wiederholung – Klausur näher!":"Weiter so – kurz reinschauen?",
+      tag:"daily",renotify:true
+    });
+    schedN();
+  },ms);
+}
+
+// ═══ NAVIGATION ══════════════════════════════════════════════
+var MAINS=["home","topics","stats"];
+function goTo(id){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("on");});
+  document.getElementById(id).classList.add("on");
+  document.getElementById("bnav").style.display=MAINS.indexOf(id)>=0?"flex":"none";
+}
+function goMain(id){goTo(id);}
+function setNav(id){
+  document.querySelectorAll(".bn").forEach(function(b){b.classList.remove("on");});
+  document.getElementById(id).classList.add("on");
+}
+function goHome(){refreshHome();goTo("home");setNav("bnH");}
+function showToast(msg){
+  var t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("on");
+  setTimeout(function(){t.classList.remove("on");},2500);
+}
+function doReset(){
+  S={streak:0,lastD:null,xp:0,tot:0,easy:0,cards:{},
+     selT:TOPICS.map(function(t){return t.id;}),
+     nTime:S.nTime,nOn:S.nOn,act:{}};
+  CARDS.forEach(function(c){S.cards[c.id]={nr:0,iv:0,ease:2.5,rat:null};});
+  svS();refreshHome();showToast("✅ Fortschritt zurückgesetzt");
+}
+function doConfetti(){
+  var cv=document.getElementById("cnv"),ctx=cv.getContext("2d");
+  cv.width=innerWidth;cv.height=innerHeight;
+  var cl=["#3d8b5a","#ca8a04","#dc2626","#2563eb","#9333ea"],p=[];
+  for(var i=0;i<60;i++)p.push({
+    x:Math.random()*cv.width,y:-10,
+    vx:(Math.random()-.5)*5,vy:Math.random()*3+2,
+    c:cl[Math.floor(Math.random()*cl.length)],
+    r:Math.random()*7+3,a:Math.random()*360,sp:(Math.random()-.5)*.15
+  });
+  var f=0;
+  function dr(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    p.forEach(function(q){
+      ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.a);
+      ctx.fillStyle=q.c;ctx.fillRect(-q.r/2,-q.r,q.r,q.r*2.5);
+      ctx.restore();
+      q.x+=q.vx;q.y+=q.vy;q.vy+=.07;q.a+=q.sp;
+    });
+    if(++f<100)requestAnimationFrame(dr);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  }
+  dr();
+}
+
+// ═══ INIT ════════════════════════════════════════════════════
+ldS();
+refreshHome();
+if(S.nOn)schedN();
+</script>
+</body>
+</html>
